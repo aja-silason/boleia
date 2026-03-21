@@ -1,0 +1,13 @@
+# Start aplication
+
+mvn spring-boot:run
+
+# Docker
+
+```
+Ação                                        Comando
+
+Subir ambiente dev	                        docker-compose up
+Derrubar	                                docker-compose down
+Ver logs do app	                            docker logs -f spring_boleia
+Adicionaste nova dependência no pom.xml	    docker-compose down && docker-compose up --build

@@ -1,0 +1,1 @@
+    alter table if exists vehicles add column model varchar(255);

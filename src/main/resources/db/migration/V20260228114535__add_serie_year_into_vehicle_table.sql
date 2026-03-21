@@ -1,0 +1,1 @@
+    alter table if exists vehicles add column serie_year varchar(255);

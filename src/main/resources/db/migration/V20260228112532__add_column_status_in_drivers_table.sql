@@ -1,0 +1,1 @@
+alter table if exists drivers add column status varchar(255) not null;
