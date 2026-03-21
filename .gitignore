@@ -47,3 +47,9 @@ application-dev.properties
 
 update.sql
 /update.sql
+
+Dockerfile
+docker-compose.yml
+
+/Dockerfile
+/docker-compose.yml
