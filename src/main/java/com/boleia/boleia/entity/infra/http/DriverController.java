@@ -16,6 +16,9 @@ import com.boleia.boleia.entity.domain.DriverNotFoundError;
 import com.boleia.boleia.entity.domain.DriverOutput;
 import com.boleia.boleia.entity.domain.NonMatchPasswordError;
 import com.boleia.boleia.entity.domain.PasswordIsWrongError;
+import com.boleia.boleia.entity.domain.PasswordLengthError;
+import com.boleia.boleia.entity.domain.PasswordMustBeProvidedError;
+import com.boleia.boleia.entity.domain.RawAndPasswordMustProvidedError;
 import com.boleia.boleia.entity.domain.SignInOutput;
 import com.boleia.boleia.entity.domain.UserNotFoundError;
 import com.boleia.boleia.shared.types.HttpResponse;
@@ -218,6 +221,10 @@ public class DriverController {
         if(out.isError() && out.unwrapError().getClass().equals(UserNotFoundError.class)) return HttpResponse.notFound(out.unwrapError().getMsg());
 
         if(out.isError() && out.unwrapError().getClass().equals(PasswordIsWrongError.class)) return HttpResponse.badRequest(out.unwrapError().getMsg());
+        
+        if(out.isError() && out.unwrapError().getClass().equals(RawAndPasswordMustProvidedError.class)) return HttpResponse.badRequest(out.unwrapError().getMsg());
+        if(out.isError() && out.unwrapError().getClass().equals(PasswordMustBeProvidedError.class)) return HttpResponse.badRequest(out.unwrapError().getMsg());
+        if(out.isError() && out.unwrapError().getClass().equals(PasswordLengthError.class)) return HttpResponse.badRequest(out.unwrapError().getMsg());
 
         return ResponseEntity.ok(out.unwrap());
     }

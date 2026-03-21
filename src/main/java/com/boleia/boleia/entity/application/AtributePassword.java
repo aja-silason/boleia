@@ -24,7 +24,7 @@ public class AtributePassword {
 
         var driver = driverOrErr.unwrap();
 
-        driver.changePassword(hashedPassword);
+        driver.changePassword(hashedPassword.unwrap());
 
         var voidOrErr = this.repository.save(driver);
         if(voidOrErr.isError()) return Result.error(voidOrErr.unwrapError());

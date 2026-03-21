@@ -7,7 +7,6 @@ import com.boleia.boleia.entity.domain.Password;
 import com.boleia.boleia.entity.domain.PasswordIsWrongError;
 import com.boleia.boleia.entity.domain.SignInOutput;
 import com.boleia.boleia.entity.domain.UserRepository;
-import com.boleia.boleia.shared.application.GenerateToken;
 import com.boleia.boleia.shared.error.DomainError;
 import com.boleia.boleia.shared.types.Result;
 
@@ -29,7 +28,7 @@ public class SignIn {
         var aPassword = new Password();
         var passwordMatched = aPassword.matches(input.password(), driverOrErr.unwrap().getPassword());
 
-        if(!passwordMatched) return Result.error(new PasswordIsWrongError());
+        if(!passwordMatched.unwrap()) return Result.error(new PasswordIsWrongError());
 
         var driver = driverOrErr.unwrap();
         var user = userOrErr.unwrap();
