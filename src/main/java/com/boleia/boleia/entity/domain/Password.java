@@ -3,32 +3,28 @@ package com.boleia.boleia.entity.domain;
 import java.util.regex.Pattern;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
+import com.boleia.boleia.shared.error.DomainError;
+import com.boleia.boleia.shared.types.Result;
 public class Password {
     
     private static final Pattern ONLY_NUMBERS = Pattern.compile("\\d{6}");
     private static final BCryptPasswordEncoder ENCODER = new BCryptPasswordEncoder();
 
-    public String fromPlainText(String rawPassword) {
+    public Result<String, DomainError> fromPlainText(String rawPassword) {
         
-        if(rawPassword == null) {
-            throw new IllegalArgumentException("Password must be provided");
-        }
+        if(rawPassword == null) return Result.error(new PasswordLengthError());
 
-        if(!ONLY_NUMBERS.matcher(rawPassword).matches()) {
-            throw new IllegalArgumentException("Password must have 6 digits");
-        }
+        if(!ONLY_NUMBERS.matcher(rawPassword).matches()) return Result.error(new PasswordMustBeProvidedError());
 
-
-        return ENCODER.encode(rawPassword);
+        return Result.ok(ENCODER.encode(rawPassword));
     }
 
-    public Boolean matches(String rawPassword, String hashedPassword) {
+    public Result<Boolean, RawAndPasswordMustProvidedError> matches(String rawPassword, String hashedPassword) {
 
-        if (rawPassword == null || hashedPassword == null){
-            throw new IllegalArgumentException("Both raw and hash password must be provided");
-        }
+        if (rawPassword == null || hashedPassword == null) return Result.error(new RawAndPasswordMustProvidedError());
 
-        return ENCODER.matches(rawPassword, hashedPassword);
+        return Result.ok(ENCODER.matches(rawPassword, hashedPassword));
     }
 
 }
