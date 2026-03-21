@@ -15,7 +15,7 @@ public class Password {
         
         if(rawPassword == null) return Result.error(new PasswordLengthError());
 
-        if(!ONLY_NUMBERS.matcher(rawPassword).matches()) return Result.error(new PasswordMustBeProvidedError());
+        if(!ONLY_NUMBERS.matcher(rawPassword).matches()) return Result.error(new PasswordMustBeNumbersAndHaveSixDigitsError());
 
         return Result.ok(ENCODER.encode(rawPassword));
     }
