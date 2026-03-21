@@ -21,6 +21,7 @@ public class AtributePassword {
         var aPassword = new Password();
 
         var hashedPassword = aPassword.fromPlainText(input.password());
+        if(hashedPassword.isError()) return Result.error(hashedPassword.unwrapError());
 
         var driver = driverOrErr.unwrap();
 

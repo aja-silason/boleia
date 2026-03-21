@@ -27,6 +27,7 @@ public class SignIn {
 
         var aPassword = new Password();
         var passwordMatched = aPassword.matches(input.password(), driverOrErr.unwrap().getPassword());
+        if(passwordMatched.isError()) return Result.error(passwordMatched.unwrapError());
 
         if(!passwordMatched.unwrap()) return Result.error(new PasswordIsWrongError());
 

@@ -29,6 +29,7 @@ public class ChangePassword {
         if(!passwordMatched.unwrap()) return Result.error(new PasswordIsWrongError());
 
         var hashedPassword = aPassword.fromPlainText(input.confirmedPassword());
+        if(hashedPassword.isError()) return Result.error(hashedPassword.unwrapError());
 
         var driver = driverOrErr.unwrap();
 
