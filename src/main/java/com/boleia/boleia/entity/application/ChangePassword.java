@@ -26,13 +26,14 @@ public class ChangePassword {
         var passwordMatched = aPassword.matches(input.oldPassword(), driverOrErr.unwrap().getPassword());
 
         if(!input.oldPassword().equals(input.confirmedPassword())) return Result.error(new NonMatchPasswordError());
-        if(!passwordMatched) return Result.error(new PasswordIsWrongError());
+        if(!passwordMatched.unwrap()) return Result.error(new PasswordIsWrongError());
 
         var hashedPassword = aPassword.fromPlainText(input.confirmedPassword());
+        if(hashedPassword.isError()) return Result.error(hashedPassword.unwrapError());
 
         var driver = driverOrErr.unwrap();
 
-        driver.changePassword(hashedPassword);
+        driver.changePassword(hashedPassword.unwrap());
 
         var voidOrErr = this.repository.save(driver);
         if(voidOrErr.isError()) return Result.error(voidOrErr.unwrapError());

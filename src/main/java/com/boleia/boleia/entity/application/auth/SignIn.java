@@ -1,5 +1,8 @@
 package com.boleia.boleia.entity.application.auth;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 import org.springframework.stereotype.Service;
 
 import com.boleia.boleia.entity.domain.DriverRepository;
@@ -7,7 +10,6 @@ import com.boleia.boleia.entity.domain.Password;
 import com.boleia.boleia.entity.domain.PasswordIsWrongError;
 import com.boleia.boleia.entity.domain.SignInOutput;
 import com.boleia.boleia.entity.domain.UserRepository;
-import com.boleia.boleia.shared.application.GenerateToken;
 import com.boleia.boleia.shared.error.DomainError;
 import com.boleia.boleia.shared.types.Result;
 
@@ -28,21 +30,26 @@ public class SignIn {
 
         var aPassword = new Password();
         var passwordMatched = aPassword.matches(input.password(), driverOrErr.unwrap().getPassword());
+        if(passwordMatched.isError()) return Result.error(passwordMatched.unwrapError());
 
-        if(!passwordMatched) return Result.error(new PasswordIsWrongError());
+        if(!passwordMatched.unwrap()) return Result.error(new PasswordIsWrongError());
 
         var driver = driverOrErr.unwrap();
         var user = userOrErr.unwrap();
 
+        LocalDateTime expirationDate = LocalDateTime.now().plusDays(3);
+
+        String userWillBeSignedUntil = expirationDate.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+
         var out = new SignInOutput(
+            driver.getId().toString(),
             user.getFirstName(),
             user.getLastName(),
             user.getPhoneNumber(),
             driver.getIdentificationNumber(),
             driver.getLicenseNumber(),
             driver.getStatus().getValue(),
-            null,
-            null
+            userWillBeSignedUntil
         );
 
         return Result.ok(out);

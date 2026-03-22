@@ -14,22 +14,23 @@ import lombok.RequiredArgsConstructor;
 public class AtributePassword {
     private final DriverRepository repository;
 
-    public Result<Void, DomainError> execute(AtributePasswordInput input){
+    public Result<Boolean, DomainError> execute(AtributePasswordInput input){
         var driverOrErr = this.repository.findByIdentificationNumber(input.identificationNumber());
         if(driverOrErr.isError()) return Result.error(driverOrErr.unwrapError());
 
         var aPassword = new Password();
 
         var hashedPassword = aPassword.fromPlainText(input.password());
+        if(hashedPassword.isError()) return Result.error(hashedPassword.unwrapError());
 
         var driver = driverOrErr.unwrap();
 
-        driver.changePassword(hashedPassword);
+        driver.changePassword(hashedPassword.unwrap());
 
         var voidOrErr = this.repository.save(driver);
         if(voidOrErr.isError()) return Result.error(voidOrErr.unwrapError());
 
-        return Result.ok(null);
+        return Result.ok(true);
     }
 
 }
