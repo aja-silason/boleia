@@ -7,6 +7,5 @@ public record SignInOutput(
     String identificationNumber,
     String licenseNumber,
     String status,
-    String createdAt,
-    String updatedAt
+    String userWillBeSignedUntil
 ) {}

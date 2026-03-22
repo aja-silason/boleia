@@ -1,5 +1,8 @@
 package com.boleia.boleia.entity.application.auth;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 import org.springframework.stereotype.Service;
 
 import com.boleia.boleia.entity.domain.DriverRepository;
@@ -34,6 +37,10 @@ public class SignIn {
         var driver = driverOrErr.unwrap();
         var user = userOrErr.unwrap();
 
+        LocalDateTime expirationDate = LocalDateTime.now().plusDays(3);
+
+        String userWillBeSignedUntil = expirationDate.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+
         var out = new SignInOutput(
             user.getFirstName(),
             user.getLastName(),
@@ -41,8 +48,7 @@ public class SignIn {
             driver.getIdentificationNumber(),
             driver.getLicenseNumber(),
             driver.getStatus().getValue(),
-            null,
-            null
+            userWillBeSignedUntil
         );
 
         return Result.ok(out);
