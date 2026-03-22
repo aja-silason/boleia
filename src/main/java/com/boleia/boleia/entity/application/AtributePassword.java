@@ -14,7 +14,7 @@ import lombok.RequiredArgsConstructor;
 public class AtributePassword {
     private final DriverRepository repository;
 
-    public Result<Void, DomainError> execute(AtributePasswordInput input){
+    public Result<Boolean, DomainError> execute(AtributePasswordInput input){
         var driverOrErr = this.repository.findByIdentificationNumber(input.identificationNumber());
         if(driverOrErr.isError()) return Result.error(driverOrErr.unwrapError());
 
@@ -30,7 +30,7 @@ public class AtributePassword {
         var voidOrErr = this.repository.save(driver);
         if(voidOrErr.isError()) return Result.error(voidOrErr.unwrapError());
 
-        return Result.ok(null);
+        return Result.ok(true);
     }
 
 }
