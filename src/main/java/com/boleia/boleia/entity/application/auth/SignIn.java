@@ -42,6 +42,7 @@ public class SignIn {
         String userWillBeSignedUntil = expirationDate.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
 
         var out = new SignInOutput(
+            driver.getId().toString(),
             user.getFirstName(),
             user.getLastName(),
             user.getPhoneNumber(),
