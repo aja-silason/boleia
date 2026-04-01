@@ -4,6 +4,7 @@ import org.springframework.stereotype.Component;
 
 import com.boleia.boleia.entity.application.AtributePasswordInput;
 import com.boleia.boleia.entity.application.ChangePasswordInput;
+import com.boleia.boleia.entity.application.RecoveryPasswordInput;
 import com.boleia.boleia.entity.application.RegisterDriverInput;
 import com.boleia.boleia.entity.application.auth.SignInInput;
 
@@ -24,6 +25,10 @@ public class DriverInputMapper {
 
     public AtributePasswordInput toAtributePasswordInput(AtributePasswordRequest body) {
         return new AtributePasswordInput(body.identificationNumber(), body.password());
+    }
+
+    public RecoveryPasswordInput toRecoveryPassworInput(RecoveryPasswordRequest body) {
+        return new RecoveryPasswordInput(body.phoneNumber(), body.password());
     }
 
 }

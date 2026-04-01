@@ -9,6 +9,7 @@ import com.boleia.boleia.entity.application.BanDriver;
 import com.boleia.boleia.entity.application.ChangePassword;
 import com.boleia.boleia.entity.application.DeclineDriver;
 import com.boleia.boleia.entity.application.DriverFinder;
+import com.boleia.boleia.entity.application.RecoveryPassword;
 import com.boleia.boleia.entity.application.RegisterDriver;
 import com.boleia.boleia.entity.application.auth.SignIn;
 import com.boleia.boleia.entity.domain.DriverIsAlreadyExistsError;
@@ -55,6 +56,7 @@ public class DriverController {
     private final DeclineDriver declineDriver;
     private final ChangePassword changePassword;
     private final AtributePassword atributePassword;
+    private final RecoveryPassword recoveryPassword;
     private final SignIn signin;
 
     @PostMapping("/driver")
@@ -230,6 +232,34 @@ public class DriverController {
 
         return ResponseEntity.ok(out.unwrap());
     }
+
+
+    @PatchMapping("/auth/driver/recovery-password")
+    @Operation(
+        summary = "Recovery a password in a driver",
+        responses = {
+            @ApiResponse(responseCode = "200", content = @Content(mediaType = "application/json", schema = @Schema(name = "",implementation = Boolean.class))),
+            @ApiResponse(responseCode = "400", content = @Content(mediaType = "application/json", schema = @Schema(name = "ErrorResponse",implementation = HttpResponse.class))),
+            @ApiResponse(responseCode = "404",content = @Content(mediaType = "application/json",schema = @Schema(name = "ErrorResponse",implementation = HttpResponse.class))),
+        }
+    )
+    public ResponseEntity<?> recoveryPassword(@RequestBody RecoveryPasswordRequest body) {
+
+        var input = inputMapper.toRecoveryPassworInput(body);
+        var out = recoveryPassword.execute(input);
+
+        if(out.isError() && out.unwrapError().getClass().equals(UserNotFoundError.class)) return HttpResponse.notFound(out.unwrapError().getMsg());
+        if(out.isError() && out.unwrapError().getClass().equals(DriverNotFoundError.class)) return HttpResponse.notFound(out.unwrapError().getMsg());
+
+        if(out.isError() && out.unwrapError().getClass().equals(PasswordIsWrongError.class)) return HttpResponse.badRequest(out.unwrapError().getMsg());
+        
+        if(out.isError() && out.unwrapError().getClass().equals(RawAndPasswordMustProvidedError.class)) return HttpResponse.badRequest(out.unwrapError().getMsg());
+        if(out.isError() && out.unwrapError().getClass().equals(PasswordMustBeNumbersAndHaveSixDigitsError.class)) return HttpResponse.badRequest(out.unwrapError().getMsg());
+        if(out.isError() && out.unwrapError().getClass().equals(PasswordLengthError.class)) return HttpResponse.badRequest(out.unwrapError().getMsg());
+
+        return ResponseEntity.ok(out.unwrap());
+    }
+
 
 
     @GetMapping("/driver/indentification-number/{indentificationNumber}")
