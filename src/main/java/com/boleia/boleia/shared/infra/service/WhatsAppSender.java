@@ -16,7 +16,7 @@ import lombok.Getter;
 
 @Getter
 @Component
-public class WhatsAppSender implements OtpRepository {
+public class WhatsAppSender {
 
     @Value("${whatsapp.api.url}")
     private String apiUrl;
@@ -30,36 +30,36 @@ public class WhatsAppSender implements OtpRepository {
         this.restClient = restClientBuilder.build();
     }
 
-    @Override
+    // @Override
     public void send(String to, String message) {
         this.sendOtp(to, message);
     }
 
-    @Override
+    // @Override
     public Result<Void, DomainError> sendOtp(String to, String otp) {
         Map<String, Object> body = Map.of(
             "messaging_product", "whatsapp",
             "to", to,
             "type", "template",
             "template", Map.of(
-                "name", "BOLEIA",
-                "language", Map.of("code", "pt_AO"),
-                "components", List.of(
-                    Map.of(
-                        "type", "body",
-                        "parameters", List.of(
-                            Map.of("type", "text", "text", otp)
-                        )
-                    ),
-                    Map.of(
-                        "type", "button",
-                        "sub_type", "url",
-                        "index", "0",
-                        "parameters", List.of(
-                            Map.of("type", "text", "text", otp)
-                        )
-                    )
-                )
+                "name", "hello_world",
+                "language", Map.of("code", "en_US")
+                // "components", List.of(
+                //     Map.of(
+                //         "type", "body",
+                //         "parameters", List.of(
+                //             Map.of("type", "text", "text", otp)
+                //         )
+                //     )
+                    // Map.of(
+                    //     "type", "button",
+                    //     "sub_type", "url",
+                    //     "index", "0",
+                    //     "parameters", List.of(
+                    //         Map.of("type", "text", "text", otp)
+                    //     )
+                    // )
+                // )
             )
         );
 

@@ -62,6 +62,14 @@ public class PostgresSQLDriverRepository implements DriverRepository {
             : Result.error(new DriverNotFoundError());
     }
 
+    @Override
+    public Result<Driver, DriverNotFoundError> findByPhoneNumber(String phoneNumber) {
+        var model = this.jpa.findByUserPhoneNumber(phoneNumber);
+        return model.isPresent()
+            ? Result.ok(this.toDriverFactory(model.get()))
+            : Result.error(new DriverNotFoundError());
+    }
+
     private DriverModel toModel(Driver driver) {
         var model = (driver.getId() != null) 
             ? jpa.findById(driver.getId().toString()).orElse(new DriverModel()) 

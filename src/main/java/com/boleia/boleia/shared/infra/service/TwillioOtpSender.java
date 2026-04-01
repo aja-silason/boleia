@@ -13,7 +13,7 @@ import lombok.Getter;
 
 @Getter
 @Component
-public class TwillioOtpSender {
+public class TwillioOtpSender implements OtpRepository {
     private final String accountSid;
     private final String authToken;
     private final String fromPhone;
@@ -33,7 +33,7 @@ public class TwillioOtpSender {
         this.sendOtp(to, otp);
     }
 
-    // @Override
+    @Override
     public Result<Void, DomainError> sendOtp(String to, String otp){
         Message.creator(
             new com.twilio.type.PhoneNumber(to),

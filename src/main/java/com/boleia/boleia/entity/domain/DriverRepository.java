@@ -9,5 +9,6 @@ public interface DriverRepository {
     Result<Driver, DomainError> save(Driver driver);
     Result<Driver, DriverNotFoundError> findById(UUID id);
     Result<Driver, DriverNotFoundError> findByIdentificationNumber(String identificationNumber);
+    Result<Driver, DriverNotFoundError> findByPhoneNumber(String phoneNumber);
     Result<Driver, DriverNotFoundError> findByUserId(UUID id);
 }
