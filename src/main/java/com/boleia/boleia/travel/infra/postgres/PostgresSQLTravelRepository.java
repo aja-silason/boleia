@@ -1,8 +1,11 @@
 package com.boleia.boleia.travel.infra.postgres;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Repository;
 
@@ -93,7 +96,7 @@ public class PostgresSQLTravelRepository implements TravelRepository {
     }
 
     private Travel toTravelFactory(TravelModel model) {
-        List<TravelPassanger> passangers = model.getPassengers().stream().map(this::toTravelPassanger).toList();
+        List<TravelPassanger> passangers = model.getPassengers().stream().map(this::toTravelPassanger).collect(Collectors.toCollection(ArrayList::new));
 
         return Travel.from(
             UUID.fromString(model.getId()), 
