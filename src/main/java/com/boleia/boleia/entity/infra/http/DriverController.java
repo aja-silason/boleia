@@ -286,8 +286,8 @@ public class DriverController {
             @ApiResponse(responseCode = "404",content = @Content(mediaType = "application/json",schema = @Schema(name = "ErrorResponse",implementation = HttpResponse.class))),
         }
     )
-    public ResponseEntity<?> findByPhoneNumber(@PathVariable String phoneNumber) {
-        var out = finder.findByIdentificationNumber(phoneNumber);
+    public ResponseEntity<?> findByPhoneNumber(@RequestBody FindDriverByPhoneNumber body) {
+        var out = finder.findByIdentificationNumber(body.phoneNumber());
         if(out.isError() && out.unwrapError().getClass().equals(DriverNotFoundError.class)) return HttpResponse.notFound(out.unwrapError().getMsg());
 
         return ResponseEntity.ok(out.unwrap());
