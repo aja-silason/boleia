@@ -43,7 +43,7 @@ public class PostgresSQLVehicleGateway implements VehicleGateway {
     }
 
     private VehicleOutput toOutput(VehicleModel model) {    
-        return new VehicleOutput(model.getId(), model.getPlate(), model.getModel(), model.getColor(), model.getBrand(), model.getYear(), model.getCreatedAt().toString(), model.getUpdatedAt().toString());
+        return new VehicleOutput(model.getId(), model.getPlate(), model.getModel(), model.getColor(), model.getBrand(), model.getYear(), Integer.getInteger(model.getSeats()), model.getCreatedAt().toString(), model.getUpdatedAt().toString());
     }
 
     @Override
