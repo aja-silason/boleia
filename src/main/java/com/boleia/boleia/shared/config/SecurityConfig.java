@@ -11,16 +11,15 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-            // autoriza livremente o Swagger e API docs
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers(
                     "/v3/api-docs/**",
                     "/swagger-ui/**",
                     "/swagger-ui.html"
                 ).permitAll()
-                .anyRequest().permitAll() // se quiser liberar tudo
+                .anyRequest().permitAll()
             )
-            .csrf(csrf -> csrf.disable()); // desativa CSRF pra facilitar testes
+            .csrf(csrf -> csrf.disable());
         return http.build();
     }
     

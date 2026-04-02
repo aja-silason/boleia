@@ -7,7 +7,7 @@ public record VehicleOutput(
     String color,
     String brand,
     String year,
-    int seats,
+    String seats,
     String createdAt,
     String updatedAt
 ) {}
