@@ -14,8 +14,8 @@ import com.boleia.boleia.shared.types.Result;
 
 import lombok.Getter;
 
-@Getter
-@Component
+// @Getter
+// @Component
 public class WhatsAppSender {
 
     @Value("${whatsapp.api.url}")
