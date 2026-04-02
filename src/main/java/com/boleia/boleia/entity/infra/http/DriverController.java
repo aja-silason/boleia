@@ -1,6 +1,7 @@
 package com.boleia.boleia.entity.infra.http;
 
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.boleia.boleia.entity.application.ApproveDriver;
@@ -277,7 +278,7 @@ public class DriverController {
 
     }
 
-    @GetMapping("/driver/phone-number/{phoneNumber}")
+    @GetMapping("/driver/phone-number")
     @Operation(
         summary = "Get driver by id",
         responses = {
@@ -286,8 +287,11 @@ public class DriverController {
             @ApiResponse(responseCode = "404",content = @Content(mediaType = "application/json",schema = @Schema(name = "ErrorResponse",implementation = HttpResponse.class))),
         }
     )
-    public ResponseEntity<?> findByPhoneNumber(@RequestBody FindDriverByPhoneNumber body) {
-        var out = finder.findByIdentificationNumber(body.phoneNumber());
+    public ResponseEntity<?> findByPhoneNumber(@RequestParam String phoneNumber) {
+        String sanitizedPhone = phoneNumber.trim();
+        if(!sanitizedPhone.startsWith("+")) sanitizedPhone = "+" + sanitizedPhone;
+
+        var out = finder.findByPhoneNumber(sanitizedPhone);
         if(out.isError() && out.unwrapError().getClass().equals(DriverNotFoundError.class)) return HttpResponse.notFound(out.unwrapError().getMsg());
 
         return ResponseEntity.ok(out.unwrap());
