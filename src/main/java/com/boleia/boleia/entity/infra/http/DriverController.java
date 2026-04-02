@@ -260,8 +260,6 @@ public class DriverController {
         return ResponseEntity.ok(out.unwrap());
     }
 
-
-
     @GetMapping("/driver/indentification-number/{indentificationNumber}")
     @Operation(
         summary = "Get driver by id",
@@ -273,6 +271,23 @@ public class DriverController {
     )
     public ResponseEntity<?> findByIndentificationNumber(@PathVariable String indentificationNumber) {
         var out = finder.findByIdentificationNumber(indentificationNumber);
+        if(out.isError() && out.unwrapError().getClass().equals(DriverNotFoundError.class)) return HttpResponse.notFound(out.unwrapError().getMsg());
+
+        return ResponseEntity.ok(out.unwrap());
+
+    }
+
+    @GetMapping("/driver/phone-number/{phoneNumber}")
+    @Operation(
+        summary = "Get driver by id",
+        responses = {
+            @ApiResponse(responseCode = "200", content = @Content(mediaType = "application/json", schema = @Schema(name = "DriverOutput", implementation = DriverOutput.class))),
+            @ApiResponse(responseCode = "400", content = @Content(mediaType = "application/json", schema = @Schema(name = "ErrorResponse",implementation = HttpResponse.class))),
+            @ApiResponse(responseCode = "404",content = @Content(mediaType = "application/json",schema = @Schema(name = "ErrorResponse",implementation = HttpResponse.class))),
+        }
+    )
+    public ResponseEntity<?> findByPhoneNumber(@PathVariable String phoneNumber) {
+        var out = finder.findByIdentificationNumber(phoneNumber);
         if(out.isError() && out.unwrapError().getClass().equals(DriverNotFoundError.class)) return HttpResponse.notFound(out.unwrapError().getMsg());
 
         return ResponseEntity.ok(out.unwrap());

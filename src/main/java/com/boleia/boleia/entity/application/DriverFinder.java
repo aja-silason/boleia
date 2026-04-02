@@ -28,4 +28,8 @@ public class DriverFinder {
         return this.gateway.findByIdentificationNumber(identificationNumber);
     }
 
+    public Result<DriverOutput, DriverNotFoundError> findByPhoneNumber(String phoneNumber){
+        return this.gateway.findByPhoneNumber(phoneNumber);
+    }
+
 }

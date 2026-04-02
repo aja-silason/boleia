@@ -38,6 +38,14 @@ public class PostgresSQLDriverGateway implements DriverGateway {
     }
 
     @Override
+    public Result<DriverOutput, DriverNotFoundError> findByPhoneNumber(String phoneNumber) {
+        var model = this.jpa.findByUserPhoneNumber(phoneNumber);
+        return model.isPresent() 
+            ? Result.ok(this.toDriverOutput(model.get())) 
+            : Result.error(new DriverNotFoundError());
+    }
+
+    @Override
     public Result<List<DriverOutput>, Void> findAll() {
         var models = this.jpa.findAll();
         var out = models.stream().map(this::toDriverOutput).toList();
