@@ -63,7 +63,7 @@ public class NotificationController {
         if(out.isError() && out.unwrapError().getClass().equals(OtpExpiredError.class)) return HttpResponse.badRequest(out.unwrapError().getMsg());
         if(out.isError() && out.unwrapError().getClass().equals(OtpNotMatchError.class)) return HttpResponse.badRequest(out.unwrapError().getMsg());
 
-        return ResponseEntity.status(200).body(out);
+        return ResponseEntity.status(200).body(out.unwrap());
     }
     
 }
