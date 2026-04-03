@@ -17,15 +17,19 @@ public class TwillioOtpSender implements OtpRepository {
     private final String accountSid;
     private final String authToken;
     private final String fromPhone;
+    private final String messageService;
+
 
     public TwillioOtpSender(
         @Value("${twilio.accountSid}") String accountSid, 
         @Value("${twilio.authToken}") String authToken, 
-        @Value("${twilio.phoneNumber}") String fromPhone
+        @Value("${twilio.phoneNumber}") String fromPhone,
+        @Value("${twilio.message.service}") String messageService
     ){
         this.accountSid = accountSid;
         this.authToken = authToken;
         this.fromPhone = fromPhone;
+        this.messageService = messageService;
         Twilio.init(accountSid, authToken);
     }
 
@@ -37,7 +41,7 @@ public class TwillioOtpSender implements OtpRepository {
     public Result<Void, DomainError> sendOtp(String to, String otp){
         Message.creator(
             new com.twilio.type.PhoneNumber(to),
-            "MG7ee018d9daf6d33c77e91d9a85b46229",
+            messageService,
             "Código de validação: " + otp
         ).create();
         return Result.ok(null);
