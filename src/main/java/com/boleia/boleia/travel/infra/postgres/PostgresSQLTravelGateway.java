@@ -6,11 +6,15 @@ import java.util.UUID;
 
 import org.springframework.stereotype.Repository;
 
+import com.boleia.boleia.entity.domain.UserOutput;
+import com.boleia.boleia.entity.domain.VehicleOutput;
 import com.boleia.boleia.shared.jpa.entity.TravelModel;
 import com.boleia.boleia.shared.jpa.entity.TravelModelJpa;
 import com.boleia.boleia.shared.jpa.entity.TravelPassangerModel;
 import com.boleia.boleia.shared.jpa.entity.TravelQueryBuilder;
 import com.boleia.boleia.shared.jpa.entity.UserModel;
+import com.boleia.boleia.shared.jpa.entity.UserModelJpa;
+import com.boleia.boleia.shared.jpa.entity.VehicleModel;
 import com.boleia.boleia.shared.types.Result;
 import com.boleia.boleia.travel.domain.PassengerOutput;
 import com.boleia.boleia.travel.domain.TravelGateway;
@@ -91,6 +95,8 @@ public class PostgresSQLTravelGateway implements TravelGateway {
             availableSeats,
             availablePassangers,
             pendingPassangers,
+            null,
+            model.getVehicle() == null ? null : this.toCarOutput(model.getVehicle()),
             model.getCreatedAt().toString(),
             model.getUpdatedAt().toString()
         );
@@ -104,6 +110,32 @@ public class PostgresSQLTravelGateway implements TravelGateway {
             model.getPhoneNumber(), 
             travelPassangerModel.getStatus(), 
             travelPassangerModel.getCreatedAt().toString()
+        );
+    }
+
+    private UserOutput toDriverOutput(UserModel model) {
+        return new UserOutput(
+            model.getId().toString(),
+            model.getFirstName(),
+            model.getLastName(),
+            model.getPhoneNumber(),
+            true,
+            model.getCreatedAt().toString(),
+            model.getUpdatedAt().toString()
+        );
+    }
+
+    private VehicleOutput toCarOutput(VehicleModel model) {
+        return new VehicleOutput(
+            model.getId().toString(), 
+            model.getPlate(), 
+            model.getModel(), 
+            model.getColor(), 
+            model.getBrand(), 
+            model.getYear(), 
+            model.getSeats(), 
+            model.getCreatedAt().toString(),
+            model.getUpdatedAt().toString()
         );
     }
     

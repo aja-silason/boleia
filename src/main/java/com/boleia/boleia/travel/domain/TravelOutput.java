@@ -4,6 +4,9 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
 
+import com.boleia.boleia.entity.domain.UserOutput;
+import com.boleia.boleia.entity.domain.VehicleOutput;
+
 
 public record TravelOutput(
     String id,
@@ -19,6 +22,8 @@ public record TravelOutput(
     Integer availableSeats,
     List<PassengerOutput> availablePassangers,
     List<PassengerOutput> pendingPassanger,
+    UserOutput driver,
+    VehicleOutput car,
     String createdAt,
     String updatedAt
 ) {}
