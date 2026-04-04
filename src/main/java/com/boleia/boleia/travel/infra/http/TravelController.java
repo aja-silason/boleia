@@ -1,6 +1,7 @@
 package com.boleia.boleia.travel.infra.http;
 
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.boleia.boleia.entity.domain.DriverIsAlreadyExistsError;
@@ -100,6 +101,24 @@ public class TravelController {
     )
     public ResponseEntity<?> findAll() {
         var out = finder.findAll();
+        return ResponseEntity.ok(out.unwrap());
+
+    }
+
+    @GetMapping("/travels/search")
+    @Operation(
+        summary = "Seacrh travels",
+        responses = {
+            @ApiResponse(responseCode = "200", content = @Content(mediaType = "application/json", schema = @Schema(name = "TravelOutput", implementation = TravelOutput.class))),
+            @ApiResponse(responseCode = "400", content = @Content(mediaType = "application/json", schema = @Schema(name = "ErrorResponse",implementation = HttpResponse.class))),
+            @ApiResponse(responseCode = "404",content = @Content(mediaType = "application/json",schema = @Schema(name = "ErrorResponse",implementation = HttpResponse.class))),
+        }
+    )
+    public ResponseEntity<?> searchTravels(
+        @RequestParam(required = false) String location,
+        @RequestParam(required = false, defaultValue = "1") Integer seats
+    ) {
+        var out = finder.findByFilter(location, seats);
         return ResponseEntity.ok(out.unwrap());
 
     }

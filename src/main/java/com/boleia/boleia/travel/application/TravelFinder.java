@@ -28,4 +28,8 @@ public class TravelFinder {
         return this.gateway.findAllDriver(id);
     }
 
+    public Result<List<TravelOutput>, Void> findByFilter(String location, Integer seats){
+        return this.gateway.findByFilter(location, seats);
+    }
+
 }

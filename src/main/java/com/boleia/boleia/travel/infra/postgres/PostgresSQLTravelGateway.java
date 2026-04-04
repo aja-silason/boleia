@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 import com.boleia.boleia.shared.jpa.entity.TravelModel;
 import com.boleia.boleia.shared.jpa.entity.TravelModelJpa;
 import com.boleia.boleia.shared.jpa.entity.TravelPassangerModel;
+import com.boleia.boleia.shared.jpa.entity.TravelQueryBuilder;
 import com.boleia.boleia.shared.jpa.entity.UserModel;
 import com.boleia.boleia.shared.types.Result;
 import com.boleia.boleia.travel.domain.PassengerOutput;
@@ -19,6 +20,7 @@ import com.boleia.boleia.travel.domain.TravelPassangerStatus;
 import com.boleia.boleia.travel.domain.TravelStatus;
 
 import lombok.RequiredArgsConstructor;
+import net.bytebuddy.asm.Advice.Return;
 
 @Repository
 @RequiredArgsConstructor
@@ -44,6 +46,20 @@ public class PostgresSQLTravelGateway implements TravelGateway {
     public Result<List<TravelOutput>, Void> findAllDriver(String id) {
         var model = this.jpa.findAllByDriverId(id);
         var out = model.stream().map(this::toOutput).toList();
+        return Result.ok(out);
+    }
+
+    @Override
+    public Result<List<TravelOutput>, Void> findByFilter(String location, Integer seats) {
+        var spec = new TravelQueryBuilder()
+                        .withAvailableSeats(seats)
+                        .withLocation(location)
+                        .build();
+                        
+        var model = this.jpa.findAll(spec);
+
+        var out = model.stream().map(this::toOutput).toList();
+
         return Result.ok(out);
     }
 

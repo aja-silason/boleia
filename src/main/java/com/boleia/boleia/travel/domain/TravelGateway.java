@@ -8,4 +8,5 @@ public interface TravelGateway {
     Result<List<TravelOutput>, Void> findAll();
     Result<List<TravelOutput>, Void> findAllDriver(String id);
     Result<TravelOutput, TravelNotFoundError> findById(String id);
+    Result<List<TravelOutput>, Void> findByFilter(String location, Integer seats);
 }
