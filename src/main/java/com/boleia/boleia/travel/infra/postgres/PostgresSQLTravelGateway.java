@@ -116,6 +116,7 @@ public class PostgresSQLTravelGateway implements TravelGateway {
     private UserOutput toDriverOutput(UserModel model) {
         return new UserOutput(
             model.getId().toString(),
+            model.getId().toString(),
             model.getFirstName(),
             model.getLastName(),
             model.getPhoneNumber(),

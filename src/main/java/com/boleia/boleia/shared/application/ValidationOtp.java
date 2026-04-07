@@ -1,7 +1,10 @@
 package com.boleia.boleia.shared.application;
 
+import java.util.UUID;
+
 import org.springframework.stereotype.Service;
 
+import com.boleia.boleia.entity.domain.DriverRepository;
 import com.boleia.boleia.entity.domain.UserOutput;
 import com.boleia.boleia.entity.domain.UserRepository;
 import com.boleia.boleia.shared.domain.notification.OtpExpiredError;
@@ -32,12 +35,13 @@ public class ValidationOtp {
 
         var userOrErr = this.userRepository.findByPhoneNumber(input.phoneNumber());
         if(userOrErr.isError()) return Result.error(userOrErr.unwrapError());
-        
+               
         boolean valid = entryOrErr.unwrap().getOtp().equals(input.otp());
         
         if(!valid) return Result.error(new OtpNotMatchError());
 
         var out = new UserOutput(
+            userOrErr.unwrap().getId().toString(), 
             userOrErr.unwrap().getId().toString(), 
             userOrErr.unwrap().getFirstName(), 
             userOrErr.unwrap().getLastName(), 

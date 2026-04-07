@@ -64,6 +64,7 @@ public class PostgresSQLUserRepository implements UserRepository {
         model.setPhoneNumber(user.getPhoneNumber());
         model.setType(user.getType());
         model.setStatus(user.getStatus().getValue());
+        model.setFcm(user.getFcm());
         return model;
     }
 

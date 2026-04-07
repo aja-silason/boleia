@@ -21,6 +21,8 @@ public class AddFirebaseTokenMessage {
 
         var user = userOrErr.unwrap();
 
+        System.out.println("Olha o token" + input.fcm());
+
         user.addFCM(input.fcm());
 
         var saveOrErr = this.userRepository.save(user);

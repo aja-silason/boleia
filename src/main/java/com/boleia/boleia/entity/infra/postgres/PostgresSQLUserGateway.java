@@ -44,6 +44,7 @@ public class PostgresSQLUserGateway implements UserGateway {
     private UserOutput toUserOutput(UserModel model) {
         return new UserOutput(
             model.getId().toString(),
+            model.getId().toString(),
             model.getFirstName(),
             model.getLastName(),
             model.getPhoneNumber(),

@@ -43,6 +43,7 @@ public class SignIn {
 
         var out = new SignInOutput(
             driver.getId().toString(),
+            user.getId().toString(),
             user.getFirstName(),
             user.getLastName(),
             user.getPhoneNumber(),
