@@ -12,6 +12,7 @@ public class User {
     private String phoneNumber;
     private EntityType type;
     private EntityStatus status;
+    private String fcm;
 
     public User(
         UUID id,
@@ -19,7 +20,8 @@ public class User {
         String lastName,
         String phoneNumber,
         EntityType type,
-        EntityStatus status
+        EntityStatus status,
+        String fcm
     ){
         this.id = id;
         this.firstName = firstName;
@@ -27,6 +29,7 @@ public class User {
         this.phoneNumber = phoneNumber;
         this.type = type;
         this.status = status;
+        this.fcm = fcm;
     }
 
     public static User create(
@@ -41,7 +44,8 @@ public class User {
             lastName,
             phoneNumber,
             type,
-            EntityStatus.PENDING
+            EntityStatus.PENDING,
+            null
         );
     }
 
@@ -59,10 +63,14 @@ public class User {
             lastName,
             phoneNumber,
             type,
-            status
+            status,
+            null
         );
     }
 
+    public void addFCM(String fcm){
+        this.fcm = fcm;
+    }
 
     public void approve(){
         this.status = EntityStatus.APPROVED;
