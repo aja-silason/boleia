@@ -8,12 +8,15 @@ import lombok.Getter;
 public class User {
     private UUID id;
     private EntityType type;
+    private String fcm;
 
     public User(
         UUID id,
-        EntityType type
+        EntityType type,
+        String fcm
     ) {
         this.id = id;
         this.type = type;
+        this.fcm = fcm;
     }
 }

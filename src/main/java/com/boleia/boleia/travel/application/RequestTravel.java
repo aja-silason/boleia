@@ -2,6 +2,7 @@ package com.boleia.boleia.travel.application;
 
 import org.springframework.stereotype.Service;
 
+import com.boleia.boleia.shared.domain.notification.FirebaseNotificationRepository;
 import com.boleia.boleia.shared.error.DomainError;
 import com.boleia.boleia.shared.types.Result;
 import com.boleia.boleia.travel.domain.TravelIsFuelError;
@@ -17,7 +18,7 @@ import lombok.RequiredArgsConstructor;
 public class RequestTravel {
     private final TravelRepository repository;
     private final UserACL userACL;
-
+    private final FirebaseNotificationRepository firebaseNotificationRepository;
 
     @Transactional
     public Result<Void, DomainError> execute(RequestTravelInput input){
@@ -32,6 +33,9 @@ public class RequestTravel {
 
         var travel = travelOrErr.unwrap();
         travel.requestTravel(userOrErr.unwrap().getId());
+
+        var sendNotificationOrErr = firebaseNotificationRepository.sendPushNotification(userOrErr.unwrap().getFcm(), travel.getId().toString());
+        if(sendNotificationOrErr.isError()) return Result.error(sendNotificationOrErr.unwrapError());
 
         var voidOrErr = this.repository.save(travel);
         if(voidOrErr.isError()) return Result.error(voidOrErr.unwrapError());

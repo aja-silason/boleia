@@ -2,15 +2,18 @@ package com.boleia.boleia.entity.application;
 
 import java.util.UUID;
 
+import org.springframework.stereotype.Service;
+
 import com.boleia.boleia.entity.domain.UserRepository;
 import com.boleia.boleia.shared.error.DomainError;
 import com.boleia.boleia.shared.types.Result;
 
 import lombok.RequiredArgsConstructor;
 
+@Service
 @RequiredArgsConstructor
 public class AddFirebaseTokenMessage {
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
     public Result<Void, DomainError> execute(FirebaseTokenMessageInput input){
         var userOrErr = this.userRepository.findById(UUID.fromString(input.usrId()));

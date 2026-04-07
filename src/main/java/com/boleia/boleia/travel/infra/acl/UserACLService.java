@@ -30,7 +30,8 @@ public class UserACLService implements UserACL {
     private User toUserFactory(UserModel model){
         return new User(
             UUID.fromString(model.getId()),
-            EntityType.fromValue(model.getType().toString())
+            EntityType.fromValue(model.getType().toString()),
+            model.getFcm()
         );
     }
 

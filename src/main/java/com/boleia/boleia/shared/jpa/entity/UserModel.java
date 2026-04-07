@@ -29,6 +29,9 @@ public class UserModel extends BaseModel {
     @Column(name = "status")
     private String status;
 
+    @Column(name = "fcm_token")
+    private String fcm;
+
     @OneToOne(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
     private DriverModel driver;
