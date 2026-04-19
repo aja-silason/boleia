@@ -104,6 +104,11 @@ public class Travel {
         this.passangers.add(TravelPassanger.create(passangerId));
     }
 
+    public void cancelRequest(UUID passangerId) {
+        boolean removed = this.passangers.removeIf(p -> p.getPassangerId().equals(passangerId));
+        if(!removed) new DomainError("Passageiro não encontrado para cancelar a viagem");
+    }
+
     public void finish() {
         this.status = TravelStatus.COMPLETED;
     }

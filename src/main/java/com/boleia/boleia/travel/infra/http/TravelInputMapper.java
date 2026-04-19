@@ -5,6 +5,7 @@ import java.util.UUID;
 import org.springframework.stereotype.Component;
 
 import com.boleia.boleia.travel.application.ApproveRequestTravelInput;
+import com.boleia.boleia.travel.application.CancelRequestTravelInput;
 import com.boleia.boleia.travel.application.CreateTravelInput;
 import com.boleia.boleia.travel.application.EvaluateUserInput;
 import com.boleia.boleia.travel.application.RefuseRequestTravelInput;
@@ -19,6 +20,10 @@ public class TravelInputMapper {
 
     public RequestTravelInput toRequestTravelInput(TravelRequest body) {
         return new RequestTravelInput(UUID.fromString(body.travelId()), UUID.fromString(body.passangerId()));
+    }
+
+    public CancelRequestTravelInput toCancelRequestTravelInput(CancelTravelRequest body) {
+        return new CancelRequestTravelInput(UUID.fromString(body.travelId()), UUID.fromString(body.passangerId()));
     }
 
     public ApproveRequestTravelInput toApproveRequestTravelInput(ApproveTravelRequest body) {
