@@ -140,6 +140,23 @@ public class TravelController {
 
     }
 
+
+    @GetMapping("/travels/passanger/{passangerId}")
+    @Operation(
+        summary = "Get all travels by passanger",
+        responses = {
+            @ApiResponse(responseCode = "200", content = @Content(mediaType = "application/json", schema = @Schema(name = "TravelOutput", implementation = TravelOutput.class))),
+            @ApiResponse(responseCode = "400", content = @Content(mediaType = "application/json", schema = @Schema(name = "ErrorResponse",implementation = HttpResponse.class))),
+            @ApiResponse(responseCode = "404",content = @Content(mediaType = "application/json",schema = @Schema(name = "ErrorResponse",implementation = HttpResponse.class))),
+        }
+    )
+    public ResponseEntity<?> findAllByPassanger(@PathVariable String passangerId) {
+        var out = finder.findAllByPassanger(passangerId);
+        return ResponseEntity.ok(out.unwrap());
+
+    }
+
+
     @PostMapping("/travels/request")
     @Operation(
         summary = "Request a travel",

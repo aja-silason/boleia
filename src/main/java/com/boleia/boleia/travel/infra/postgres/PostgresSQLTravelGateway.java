@@ -13,7 +13,6 @@ import com.boleia.boleia.shared.jpa.entity.TravelModelJpa;
 import com.boleia.boleia.shared.jpa.entity.TravelPassangerModel;
 import com.boleia.boleia.shared.jpa.entity.TravelQueryBuilder;
 import com.boleia.boleia.shared.jpa.entity.UserModel;
-import com.boleia.boleia.shared.jpa.entity.UserModelJpa;
 import com.boleia.boleia.shared.jpa.entity.VehicleModel;
 import com.boleia.boleia.shared.types.Result;
 import com.boleia.boleia.travel.domain.PassengerOutput;
@@ -48,6 +47,13 @@ public class PostgresSQLTravelGateway implements TravelGateway {
     @Override
     public Result<List<TravelOutput>, Void> findAllDriver(String id) {
         var model = this.jpa.findAllByDriverId(id);
+        var out = model.stream().map(this::toOutput).toList();
+        return Result.ok(out);
+    }
+
+    @Override
+    public Result<List<TravelOutput>, Void> findAllUser(String id) {
+        var model = this.jpa.findAllByPassengers(id);
         var out = model.stream().map(this::toOutput).toList();
         return Result.ok(out);
     }
