@@ -28,7 +28,7 @@ public class CancelRequestTravel {
         if(travelOrErr.isError()) return Result.error(travelOrErr.unwrapError());
 
         boolean passangerIsAlreadyInTravel = travelOrErr.unwrap().getPassangers().stream().anyMatch(p -> p.getPassangerId().equals(input.passangerId()));
-        if(passangerIsAlreadyInTravel) return Result.error(new PassangerIsAlreadyInTravelError());
+        if(!passangerIsAlreadyInTravel) return Result.error(new PassangerIsAlreadyInTravelError());
  
         var acceptedCount = travelOrErr.unwrap().getPassangers().stream().filter(ps -> ps.getStatus().equals(TravelPassangerStatus.ACCEPTED)).count();
         if(acceptedCount > travelOrErr.unwrap().getSeats()) return Result.error(new TravelIsFuelError());
