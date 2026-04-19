@@ -15,6 +15,6 @@ public interface TravelModelJpa extends JpaRepository<TravelModel, String>, JpaS
     @Query(nativeQuery = true, value = 
         "SELECT t.* FROM travels t " +
         "JOIN travel_passanger tp ON t.id = tp.travel_id " +
-        "WHERE tp.passenger_id = :passengerId AND tp.status = 'APPROVED'")
+        "WHERE tp.passenger_id = :passengerId AND tp.status = 'ACCEPTED'")
     List<TravelModel> findAllByPassengers(@Param("passengerId") String passengerId);
 }
