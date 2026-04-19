@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import com.boleia.boleia.shared.domain.notification.FirebaseNotificationRepository;
 import com.boleia.boleia.shared.error.DomainError;
 import com.boleia.boleia.shared.types.Result;
+import com.boleia.boleia.travel.domain.PassangerIsAlreadyInTravelError;
 import com.boleia.boleia.travel.domain.TravelIsFuelError;
 import com.boleia.boleia.travel.domain.TravelPassangerStatus;
 import com.boleia.boleia.travel.domain.TravelRepository;
@@ -31,7 +32,7 @@ public class RequestTravel {
         if(travelOrErr.isError()) return Result.error(travelOrErr.unwrapError());
 
         boolean passangerIsAlreadyInTravel = travelOrErr.unwrap().getPassangers().stream().anyMatch(p -> p.getPassangerId().equals(input.passangerId()));
-        if(passangerIsAlreadyInTravel) return Result.error(new DomainError("Passageiro já se encontra na viagem"));
+        if(passangerIsAlreadyInTravel) return Result.error(new PassangerIsAlreadyInTravelError());
 
         // var driver = driverACL.findById(travelOrErr.unwrap().getDriverId());
         

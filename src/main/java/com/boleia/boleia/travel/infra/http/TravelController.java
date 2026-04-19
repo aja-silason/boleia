@@ -15,6 +15,7 @@ import com.boleia.boleia.travel.application.RefuseRequestTravel;
 import com.boleia.boleia.travel.application.RequestTravel;
 import com.boleia.boleia.travel.application.StartTravel;
 import com.boleia.boleia.travel.application.TravelFinder;
+import com.boleia.boleia.travel.domain.PassangerIsAlreadyInTravelError;
 import com.boleia.boleia.travel.domain.TravelIsFuelError;
 import com.boleia.boleia.travel.domain.TravelNotFoundError;
 import com.boleia.boleia.travel.domain.TravelOutput;
@@ -153,6 +154,7 @@ public class TravelController {
         if(out.isError() && out.unwrapError().getClass().equals(UserNotFoundError.class)) return HttpResponse.notFound(out.unwrapError().getMsg());
         if(out.isError() && out.unwrapError().getClass().equals(TravelNotFoundError.class)) return HttpResponse.notFound(out.unwrapError().getMsg());
         if(out.isError() && out.unwrapError().getClass().equals(TravelIsFuelError.class)) return HttpResponse.badRequest(out.unwrapError().getMsg());
+        if(out.isError() && out.unwrapError().getClass().equals(PassangerIsAlreadyInTravelError.class)) return HttpResponse.conflict(out.unwrapError().getMsg());
 
         if(out.isError()) return HttpResponse.serverError(out.unwrapError().getMsg());
 
