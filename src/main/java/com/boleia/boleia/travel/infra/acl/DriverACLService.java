@@ -28,7 +28,8 @@ public class DriverACLService implements DriverACL {
 
     private Driver toDriverFactory(DriverModel model) {
         return new Driver(
-            UUID.fromString(model.getId())
+            UUID.fromString(model.getId()),
+            model.getUser().getFcm() == null ? null : model.getUser().getFcm()
         ); 
     }
 }

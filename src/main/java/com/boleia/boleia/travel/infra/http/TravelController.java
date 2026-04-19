@@ -117,10 +117,9 @@ public class TravelController {
     public ResponseEntity<?> searchTravels(
         @RequestParam(required = false) String location,
         @RequestParam(required = false, defaultValue = "1") Integer seats
-    ) {
+    ) { 
         var out = finder.findByFilter(location, seats);
         return ResponseEntity.ok(out.unwrap());
-
     }
 
     @GetMapping("/travels/driver/{driverId}")

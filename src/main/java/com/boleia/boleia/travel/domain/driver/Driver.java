@@ -7,11 +7,14 @@ import lombok.Getter;
 @Getter
 public class Driver {
     private UUID id;
+    private String fcm;
 
     public Driver(
-        UUID id
+        UUID id,
+        String fcm
     ) {
         this.id = id;
+        this.fcm = fcm;
     }
 
 }

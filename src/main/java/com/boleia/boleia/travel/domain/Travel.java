@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import com.boleia.boleia.shared.error.DomainError;
+
 import lombok.Getter;
 
 @Getter
@@ -96,6 +98,9 @@ public class Travel {
     }
 
     public void requestTravel(UUID passangerId){
+
+        boolean isAlreadyRequested = this.passangers.stream().anyMatch(p -> p.getPassangerId().equals(passangerId));
+        if(isAlreadyRequested) new DomainError("Passanger already requested to this travel");
         this.passangers.add(TravelPassanger.create(passangerId));
     }
 
