@@ -26,16 +26,20 @@ public class TravelQueryBuilder {
             List<Predicate> predicates = new ArrayList<>();
 
             if (location != null && !location.isBlank()) {
+
                 String searchLower = location.toLowerCase();
+                
+                String patthern = "%"+ searchLower +"%";
+
 
                 Predicate originPredicate = cb.equal(
                     cb.lower(root.get("origin")), 
-                    searchLower
+                    patthern
                 );
                 
                 Predicate destinyPredicate = cb.equal(
                     cb.lower(root.get("destiny")), 
-                    searchLower
+                    patthern
                 );
 
                 predicates.add(cb.or(originPredicate, destinyPredicate));
