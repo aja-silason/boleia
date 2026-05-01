@@ -32,12 +32,12 @@ public class TravelQueryBuilder {
                 String patthern = "%"+ searchLower +"%";
 
 
-                Predicate originPredicate = cb.equal(
+                Predicate originPredicate = cb.like(
                     cb.lower(root.get("origin")), 
                     patthern
                 );
                 
-                Predicate destinyPredicate = cb.equal(
+                Predicate destinyPredicate = cb.like(
                     cb.lower(root.get("destiny")), 
                     patthern
                 );
