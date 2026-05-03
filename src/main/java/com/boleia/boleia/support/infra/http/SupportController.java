@@ -4,7 +4,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.boleia.boleia.shared.types.HttpResponse;
+import com.boleia.boleia.support.application.ChandSupportFinder;
 import com.boleia.boleia.support.application.RequestSupport;
+import com.boleia.boleia.support.domain.chatSupport.ChatSupportNotFoundError;
 import com.boleia.boleia.support.domain.chatSupport.ChatSupportOutput;
 import com.boleia.boleia.support.domain.chatSupport.SupportMustHaveMessageError;
 import com.boleia.boleia.support.domain.user.UserNotFoundError;
@@ -18,6 +20,8 @@ import lombok.RequiredArgsConstructor;
 
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -30,7 +34,7 @@ public class SupportController {
 
     private final SupportInputMapper inputMapper;
     private final RequestSupport requestSupport;
-    
+    private final ChandSupportFinder finder;
     
     @PostMapping("/settings/support")
     @Operation(
@@ -54,22 +58,37 @@ public class SupportController {
         return ResponseEntity.status(201).build();
     }
 
+    @GetMapping("/settings/support")
+    @Operation(
+        summary = "Get a chat support information",
+        responses = {
+            @ApiResponse(responseCode = "200", content = @Content(mediaType = "application/json", schema = @Schema(name = "TravelOutput", implementation = ChatSupportOutput.class))),
+            @ApiResponse(responseCode = "400", content = @Content(mediaType = "application/json", schema = @Schema(name = "ErrorResponse",implementation = HttpResponse.class))),
+            @ApiResponse(responseCode = "404",content = @Content(mediaType = "application/json",schema = @Schema(name = "ErrorResponse",implementation = HttpResponse.class))),
+        }
+    )
+    public ResponseEntity<?> findAll() {
+        var out = finder.findAll();
+        return ResponseEntity.ok(out.unwrap());
 
-    // @GetMapping("/travels/{id}")
-    // @Operation(
-    //     summary = "Get travels by id",
-    //     responses = {
-    //         @ApiResponse(responseCode = "200", content = @Content(mediaType = "application/json", schema = @Schema(name = "TravelOutput", implementation = TravelOutput.class))),
-    //         @ApiResponse(responseCode = "400", content = @Content(mediaType = "application/json", schema = @Schema(name = "ErrorResponse",implementation = HttpResponse.class))),
-    //         @ApiResponse(responseCode = "404",content = @Content(mediaType = "application/json",schema = @Schema(name = "ErrorResponse",implementation = HttpResponse.class))),
-    //     }
-    // )
-    // public ResponseEntity<?> findById(@PathVariable String id) {
-    //     var out = finder.findById(id);
-    //     if(out.isError() && out.unwrapError().getClass().equals(TravelNotFoundError.class)) return HttpResponse.notFound(out.unwrapError().getMsg());
+    }
 
-    //     return ResponseEntity.ok(out.unwrap());
 
-    // }
+    @GetMapping("/settings/support/{id}")
+    @Operation(
+        summary = "Get a chat support information",
+        responses = {
+            @ApiResponse(responseCode = "200", content = @Content(mediaType = "application/json", schema = @Schema(name = "TravelOutput", implementation = ChatSupportOutput.class))),
+            @ApiResponse(responseCode = "400", content = @Content(mediaType = "application/json", schema = @Schema(name = "ErrorResponse",implementation = HttpResponse.class))),
+            @ApiResponse(responseCode = "404",content = @Content(mediaType = "application/json",schema = @Schema(name = "ErrorResponse",implementation = HttpResponse.class))),
+        }
+    )
+    public ResponseEntity<?> findById(@PathVariable String id) {
+        var out = finder.findById(id);
+        if(out.isError() && out.unwrapError().getClass().equals(ChatSupportNotFoundError.class)) return HttpResponse.notFound(out.unwrapError().getMsg());
+
+        return ResponseEntity.ok(out.unwrap());
+
+    }
 
 }
