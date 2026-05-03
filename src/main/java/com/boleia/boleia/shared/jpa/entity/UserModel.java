@@ -36,6 +36,10 @@ public class UserModel extends BaseModel {
     @JsonManagedReference
     private DriverModel driver;
 
+    @OneToMany(mappedBy = "user", cascade =  CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
+    private List<ChatSupportModel> chatSupports = new ArrayList<>();
+
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<RatingModel> ratings = new ArrayList<>();
 
@@ -44,3 +48,13 @@ public class UserModel extends BaseModel {
     }
 
 }
+
+
+    // create table chat_support (
+    //     id varchar(255) not null,
+    //     created_at timestamp(6) not null,
+    //     updated_at timestamp(6) not null,
+    //     message text,
+    //     user_id varchar(255),
+    //     primary key (id)
+    // );
