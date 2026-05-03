@@ -8,11 +8,13 @@ import com.boleia.boleia.entity.application.DeactiveUser;
 import com.boleia.boleia.shared.types.HttpResponse;
 import com.boleia.boleia.support.application.AtributeSystemInformation;
 import com.boleia.boleia.support.application.ChantSupportFinder;
+import com.boleia.boleia.support.application.PoliticsAndTermsFinder;
 import com.boleia.boleia.support.application.RequestSupport;
 import com.boleia.boleia.support.application.SystemInformationFinder;
 import com.boleia.boleia.support.domain.chatSupport.ChatSupportNotFoundError;
 import com.boleia.boleia.support.domain.chatSupport.ChatSupportOutput;
 import com.boleia.boleia.support.domain.chatSupport.SupportMustHaveMessageError;
+import com.boleia.boleia.support.domain.politicsAndTerms.TermsAndPolitcsOutput;
 import com.boleia.boleia.support.domain.system.SystemDataInformationCannotBeEmptyError;
 import com.boleia.boleia.support.domain.system.SystemInformationOutput;
 import com.boleia.boleia.support.domain.user.UserNotFoundError;
@@ -46,6 +48,7 @@ public class SupportController {
     private final SystemInformationFinder systemfinder;
     private final AtributeSystemInformation atributeSystemInformation;
     private final DeactiveUser deactiveUser;
+    private final PoliticsAndTermsFinder politicsAndTermsFinder;
     
     @PostMapping("/settings/support")
     @Operation(
@@ -152,6 +155,34 @@ public class SupportController {
         if(out.isError()) return HttpResponse.serverError(out.unwrapError().getMsg());
 
         return ResponseEntity.status(201).build();
+    }
+
+    @GetMapping("/settings/politcs")
+    @Operation(
+        summary = "Get a politcs",
+        responses = {
+            @ApiResponse(responseCode = "200", content = @Content(mediaType = "application/json", schema = @Schema(name = "TermsAndPolitcsOutput", implementation = TermsAndPolitcsOutput.class))),
+            @ApiResponse(responseCode = "400", content = @Content(mediaType = "application/json", schema = @Schema(name = "ErrorResponse",implementation = HttpResponse.class))),
+            @ApiResponse(responseCode = "404",content = @Content(mediaType = "application/json",schema = @Schema(name = "ErrorResponse",implementation = HttpResponse.class))),
+        }
+    )
+    public ResponseEntity<?> getAllPolitcs() {
+        var out = politicsAndTermsFinder.findAllPolitcs();
+        return ResponseEntity.ok(out.unwrap());
+    }
+
+    @GetMapping("/settings/terms")
+    @Operation(
+        summary = "Get a terms",
+        responses = {
+            @ApiResponse(responseCode = "200", content = @Content(mediaType = "application/json", schema = @Schema(name = "TermsAndPolitcsOutput", implementation = TermsAndPolitcsOutput.class))),
+            @ApiResponse(responseCode = "400", content = @Content(mediaType = "application/json", schema = @Schema(name = "ErrorResponse",implementation = HttpResponse.class))),
+            @ApiResponse(responseCode = "404",content = @Content(mediaType = "application/json",schema = @Schema(name = "ErrorResponse",implementation = HttpResponse.class))),
+        }
+    )
+    public ResponseEntity<?> getAllTerms() {
+        var out = politicsAndTermsFinder.findAllTerms();
+        return ResponseEntity.ok(out.unwrap());
     }
 
 }
