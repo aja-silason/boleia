@@ -1,6 +1,7 @@
 package com.boleia.boleia.support.infra.http;
 
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.boleia.boleia.entity.application.DeactiveUser;
@@ -143,7 +144,7 @@ public class SupportController {
             @ApiResponse(responseCode = "404",content = @Content(mediaType = "application/json",schema = @Schema(name = "ErrorResponse",implementation = HttpResponse.class))),
         }
     )
-    public ResponseEntity<?> deativeUser(@PathVariable String id) {
+    public ResponseEntity<?> deativeUser(@RequestParam String id) {
         var out = this.deactiveUser.execute(UUID.fromString(id));
 
         if(out.isError() && out.unwrapError().getClass().equals(com.boleia.boleia.entity.domain.UserNotFoundError.class)) return HttpResponse.badRequest(out.unwrapError().getMsg());
