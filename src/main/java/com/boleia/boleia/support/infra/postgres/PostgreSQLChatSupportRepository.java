@@ -35,7 +35,7 @@ public class PostgreSQLChatSupportRepository implements ChatSupportRepository {
 
     private ChatSupportModel toModel(ChatSupport domain) {
         var model = new ChatSupportModel();
-        model.setId(model.getId());
+        model.setId(domain.getId().toString());
         model.setMessage(domain.getMessage());
         model.setUser(this.toUserModel(domain.getUserId()));
         return model;

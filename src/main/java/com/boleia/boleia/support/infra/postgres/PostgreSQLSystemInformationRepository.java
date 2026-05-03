@@ -31,7 +31,7 @@ public class PostgreSQLSystemInformationRepository implements SystemInformationR
     private SystemInformationModel toModel(SystemInformation domain) {
         var model = (domain.getId() != null) ? this.jpa.findById(domain.getId().toString()).orElse(new SystemInformationModel()) : new SystemInformationModel();
 
-        model.setId(model.getId());
+        model.setId(domain.getId().toString());
         model.setApplicationVersion(domain.getAplicationVersion());
         model.setCentralPhoneNumber(domain.getCentralPhoneNumber());
         return model;

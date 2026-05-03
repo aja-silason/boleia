@@ -19,12 +19,12 @@ public class AtributePolitcs {
         if(input.title().isEmpty() || input.title().isBlank()) return Result.error(new TermsAndPolictsCannotBeEmptyError("titulo"));
         if(input.description().isEmpty() || input.description().isBlank()) return Result.error(new TermsAndPolictsCannotBeEmptyError("descrição"));
 
-        var terms = Politics.create(
+        var politcs = Politics.create(
             input.title(),
             input.description(),
             0);
 
-        var saveOrErr = this.repository.save(terms);
+        var saveOrErr = this.repository.save(politcs);
         if(saveOrErr.isError()) return Result.error(saveOrErr.unwrapError());
 
         return Result.ok(null);

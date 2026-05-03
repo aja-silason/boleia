@@ -31,7 +31,7 @@ public class PostgreSQLTermsRepository implements TermsRepository {
     private TermsModel toModel(Terms domain) {
         var model = (domain.getId() != null) ? this.jpa.findById(domain.getId().toString()).orElse(new TermsModel()) : new TermsModel();
 
-        model.setId(model.getId());
+        model.setId(domain.getId().toString());
         model.setTitle(domain.getTitle());
         model.setDescription(domain.getDescription());
         return model;
