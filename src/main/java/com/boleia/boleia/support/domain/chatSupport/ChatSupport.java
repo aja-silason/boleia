@@ -1,4 +1,4 @@
-package com.boleia.boleia.support.domain;
+package com.boleia.boleia.support.domain.chatSupport;
 
 import java.util.UUID;
 

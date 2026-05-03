@@ -17,7 +17,7 @@ import lombok.Setter;
 public class ChatSupportModel extends BaseModel {
 
     @Column(name = "message")
-    private String identificationNumber;
+    private String message;
 
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = true, foreignKey = @ForeignKey(name = "fk_driver_user"))
