@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import com.boleia.boleia.entity.domain.DriverNotFoundError;
 import com.boleia.boleia.entity.domain.DriverRepository;
+import com.boleia.boleia.entity.domain.UserIsAlreadyDelitedError;
 import com.boleia.boleia.entity.domain.UserRepository;
 import com.boleia.boleia.shared.error.DomainError;
 import com.boleia.boleia.shared.types.Result;
@@ -26,9 +27,11 @@ public class ApproveDriver {
 
         var userOrErr = this.userRepository.findById(driverOrErr.unwrap().getUser().getId());
         if(userOrErr.isError()) return Result.error(new DriverNotFoundError());
-
+        
         var driver = driverOrErr.unwrap();
         var user = userOrErr.unwrap();
+
+        if(userOrErr.unwrap().isDeactivated()) return Result.error(new UserIsAlreadyDelitedError());
 
         driver.approve();
         user.approve();
