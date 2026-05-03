@@ -8,6 +8,7 @@ import com.boleia.boleia.shared.jpa.entity.UserModelJpa;
 import com.boleia.boleia.shared.types.Result;
 import com.boleia.boleia.support.domain.system.SystemInformationGateway;
 import com.boleia.boleia.support.domain.system.SystemInformationOutput;
+import com.boleia.boleia.support.domain.system.WithOutInformationError;
 
 import lombok.RequiredArgsConstructor;
 
@@ -19,10 +20,12 @@ public class PostgreSQLSystemInformationGateway implements SystemInformationGate
 
 
     @Override
-    public Result<SystemInformationOutput, Void> findInformation() {
+    public Result<SystemInformationOutput, WithOutInformationError> findInformation() {
         var model = this.jpa.findAll();
         var out = model.stream().map(this::toOutput).findFirst();
-        return Result.ok(out.get());
+        return out.isPresent()
+            ? Result.ok(out.get())
+            : Result.error(new WithOutInformationError());
     }
 
     private SystemInformationOutput toOutput(SystemInformationModel model) {
