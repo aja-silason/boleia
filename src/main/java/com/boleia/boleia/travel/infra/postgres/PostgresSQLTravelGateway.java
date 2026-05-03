@@ -6,7 +6,6 @@ import java.util.UUID;
 
 import org.springframework.stereotype.Repository;
 
-import com.boleia.boleia.entity.domain.UserOutput;
 import com.boleia.boleia.entity.domain.VehicleOutput;
 import com.boleia.boleia.shared.jpa.entity.TravelModel;
 import com.boleia.boleia.shared.jpa.entity.TravelModelJpa;
@@ -119,18 +118,18 @@ public class PostgresSQLTravelGateway implements TravelGateway {
         );
     }
 
-    private UserOutput toDriverOutput(UserModel model) {
-        return new UserOutput(
-            model.getId().toString(),
-            model.getId().toString(),
-            model.getFirstName(),
-            model.getLastName(),
-            model.getPhoneNumber(),
-            true,
-            model.getCreatedAt().toString(),
-            model.getUpdatedAt().toString()
-        );
-    }
+    // private UserOutput toDriverOutput(UserModel model) {
+    //     return new UserOutput(
+    //         model.getId().toString(),
+    //         model.getId().toString(),
+    //         model.getFirstName(),
+    //         model.getLastName(),
+    //         model.getPhoneNumber(),
+    //         true,
+    //         model.getCreatedAt().toString(),
+    //         model.getUpdatedAt().toString()
+    //     );
+    // }
 
     private VehicleOutput toCarOutput(VehicleModel model) {
         return new VehicleOutput(

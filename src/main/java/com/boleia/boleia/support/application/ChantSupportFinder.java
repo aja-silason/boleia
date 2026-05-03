@@ -13,7 +13,7 @@ import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-public class ChandSupportFinder {
+public class ChantSupportFinder {
     private final ChatSupportGateway gateway;
 
     public Result<List<ChatSupportOutput>, Void> findAll(){

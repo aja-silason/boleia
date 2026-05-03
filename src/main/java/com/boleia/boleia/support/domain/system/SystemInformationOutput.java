@@ -4,5 +4,5 @@ public record SystemInformationOutput(
     String id,
     String centralPhoneNumber,
     String applicationVersion,
-    String userRegister
+    Integer userRegister
 ) {}
