@@ -31,6 +31,17 @@ public class ChatSupport {
             message
         );
     }
-    
+
+    public static ChatSupport from(
+        UUID id,
+        UUID userId,
+        String message
+    ) {
+        return new ChatSupport(
+            id,
+            userId,
+            message
+        );
+    }
     
 }
