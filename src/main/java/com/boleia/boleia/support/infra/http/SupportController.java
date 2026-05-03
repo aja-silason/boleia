@@ -6,7 +6,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.boleia.boleia.entity.application.DeactiveUser;
 import com.boleia.boleia.shared.types.HttpResponse;
+import com.boleia.boleia.support.application.AtributePolitcs;
 import com.boleia.boleia.support.application.AtributeSystemInformation;
+import com.boleia.boleia.support.application.AtributeTerms;
 import com.boleia.boleia.support.application.ChantSupportFinder;
 import com.boleia.boleia.support.application.PoliticsAndTermsFinder;
 import com.boleia.boleia.support.application.RequestSupport;
@@ -17,6 +19,7 @@ import com.boleia.boleia.support.domain.chatSupport.SupportMustHaveMessageError;
 import com.boleia.boleia.support.domain.politicsAndTerms.TermsAndPolitcsOutput;
 import com.boleia.boleia.support.domain.system.SystemDataInformationCannotBeEmptyError;
 import com.boleia.boleia.support.domain.system.SystemInformationOutput;
+import com.boleia.boleia.support.domain.system.TermsAndPolictsCannotBeEmptyError;
 import com.boleia.boleia.support.domain.user.UserNotFoundError;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -49,6 +52,8 @@ public class SupportController {
     private final AtributeSystemInformation atributeSystemInformation;
     private final DeactiveUser deactiveUser;
     private final PoliticsAndTermsFinder politicsAndTermsFinder;
+    private final AtributePolitcs atributePolitcs ;
+    private final AtributeTerms atributeTerms;
     
     @PostMapping("/settings/support")
     @Operation(
@@ -157,7 +162,7 @@ public class SupportController {
         return ResponseEntity.status(201).build();
     }
 
-    @GetMapping("/settings/politcs")
+    @GetMapping("/settings/politics")
     @Operation(
         summary = "Get a politcs",
         responses = {
@@ -183,6 +188,46 @@ public class SupportController {
     public ResponseEntity<?> getAllTerms() {
         var out = politicsAndTermsFinder.findAllTerms();
         return ResponseEntity.ok(out.unwrap());
+    }
+
+    @PostMapping("/settings/terms")
+    @Operation(
+        summary = "Atribute terms",
+        responses = {
+            @ApiResponse(responseCode = "201", content = @Content(mediaType = "application/json", schema = @Schema(name = "", exampleClasses = Void.class, implementation = Void.class))),
+            @ApiResponse(responseCode = "400", content = @Content(mediaType = "application/json", schema = @Schema(name = "ErrorResponse",implementation = HttpResponse.class))),
+            @ApiResponse(responseCode = "404",content = @Content(mediaType = "application/json",schema = @Schema(name = "ErrorResponse",implementation = HttpResponse.class))),
+        }
+    )
+    public ResponseEntity<?> atributeTerms(@RequestBody AtributePolitcsOrTermsRequest body) {
+        var input = this.inputMapper.toAtributePolitcsOrTermsInput(body);
+        var out = this.atributeTerms.execute(input);
+
+        if(out.isError() && out.unwrapError().getClass().equals(TermsAndPolictsCannotBeEmptyError.class)) return HttpResponse.badRequest(out.unwrapError().getMsg());
+
+        if(out.isError()) return HttpResponse.serverError(out.unwrapError().getMsg());
+
+        return ResponseEntity.status(201).build();
+    }
+
+    @PostMapping("/settings/politcs")
+    @Operation(
+        summary = "Atribute Politcs",
+        responses = {
+            @ApiResponse(responseCode = "201", content = @Content(mediaType = "application/json", schema = @Schema(name = "", exampleClasses = Void.class, implementation = Void.class))),
+            @ApiResponse(responseCode = "400", content = @Content(mediaType = "application/json", schema = @Schema(name = "ErrorResponse",implementation = HttpResponse.class))),
+            @ApiResponse(responseCode = "404",content = @Content(mediaType = "application/json",schema = @Schema(name = "ErrorResponse",implementation = HttpResponse.class))),
+        }
+    )
+    public ResponseEntity<?> atributePolitcs(@RequestBody AtributePolitcsOrTermsRequest body) {
+        var input = this.inputMapper.toAtributePolitcsOrTermsInput(body);
+        var out = this.atributePolitcs.execute(input);
+
+        if(out.isError() && out.unwrapError().getClass().equals(TermsAndPolictsCannotBeEmptyError.class)) return HttpResponse.badRequest(out.unwrapError().getMsg());
+
+        if(out.isError()) return HttpResponse.serverError(out.unwrapError().getMsg());
+
+        return ResponseEntity.status(201).build();
     }
 
 }

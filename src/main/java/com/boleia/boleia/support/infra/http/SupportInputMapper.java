@@ -4,6 +4,7 @@ import java.util.UUID;
 
 import org.springframework.stereotype.Component;
 
+import com.boleia.boleia.support.application.AtributePolitcsOrTermsInput;
 import com.boleia.boleia.support.application.AtributeSystemInformationInput;
 import com.boleia.boleia.support.application.RequestSupportInput;
 
@@ -15,5 +16,9 @@ public class SupportInputMapper {
 
     public AtributeSystemInformationInput toAtributeSystemInformationInput(SystemInformationRequest body){
         return new AtributeSystemInformationInput(body.centralPhoneNumber(), body.systemVersion());
+    }
+
+    public AtributePolitcsOrTermsInput toAtributePolitcsOrTermsInput(AtributePolitcsOrTermsRequest body){
+        return new AtributePolitcsOrTermsInput(body.title(), body.description());
     }
 }
