@@ -1,4 +1,4 @@
-package com.boleia.boleia.support.domain.politicsAndPrivacy;
+package com.boleia.boleia.support.domain.politicsAndTerms;
 
 import java.util.UUID;
 
