@@ -27,6 +27,7 @@ import java.util.UUID;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -133,7 +134,7 @@ public class SupportController {
         return ResponseEntity.status(201).build();
     }
 
-    @PostMapping("/settings/user/deactive")
+    @PatchMapping("/settings/user/deactive")
     @Operation(
         summary = "Request a support",
         responses = {
@@ -142,7 +143,7 @@ public class SupportController {
             @ApiResponse(responseCode = "404",content = @Content(mediaType = "application/json",schema = @Schema(name = "ErrorResponse",implementation = HttpResponse.class))),
         }
     )
-    public ResponseEntity<?> deativeUser(@RequestBody String id) {
+    public ResponseEntity<?> deativeUser(@PathVariable String id) {
         var out = this.deactiveUser.execute(UUID.fromString(id));
 
         if(out.isError() && out.unwrapError().getClass().equals(com.boleia.boleia.entity.domain.UserNotFoundError.class)) return HttpResponse.badRequest(out.unwrapError().getMsg());
