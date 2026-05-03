@@ -1,0 +1,8 @@
+package com.boleia.boleia.support.domain;
+
+import com.boleia.boleia.shared.error.DomainError;
+import com.boleia.boleia.shared.types.Result;
+
+public interface ChatSupportRepository {
+    Result<Void, DomainError> save(ChatSupport chatSupport);
+}
