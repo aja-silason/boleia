@@ -31,7 +31,6 @@ public class SupportController {
     private final SupportInputMapper inputMapper;
     private final RequestSupport requestSupport;
     
-
     
     @PostMapping("/settings/support")
     @Operation(
