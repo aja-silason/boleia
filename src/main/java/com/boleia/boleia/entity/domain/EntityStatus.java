@@ -6,6 +6,7 @@ import lombok.Getter;
 public enum EntityStatus {
     APPROVED("APPROVED"),
     DECLINED("DECLINED"),
+    DEACTIVATED("DEACTIVATED"),
     PENDING("PENDING"),
     BANED("BANED");
 

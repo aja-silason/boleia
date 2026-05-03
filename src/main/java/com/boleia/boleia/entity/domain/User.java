@@ -84,6 +84,10 @@ public class User {
         this.status = EntityStatus.BANED;
     }
 
+    public void deactive(){
+        this.status = EntityStatus.DEACTIVATED;
+    }
+
     public boolean isBanned(){
         return this.status == EntityStatus.BANED;
     }
@@ -94,6 +98,10 @@ public class User {
 
     public boolean isDeclined(){
         return this.status == EntityStatus.DECLINED;
+    }
+
+    public boolean isDeactivated(){
+        return this.status == EntityStatus.DEACTIVATED;
     }
 
 
