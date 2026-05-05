@@ -28,7 +28,8 @@ public class VehicleACLService implements VehicleACL {
 
     private Vehicle toVehicleFactory(VehicleModel model){
         return new Vehicle(
-            UUID.fromString(model.getId())
+            UUID.fromString(model.getId()),
+            Integer.parseInt(model.getSeats())
         );
     }
     

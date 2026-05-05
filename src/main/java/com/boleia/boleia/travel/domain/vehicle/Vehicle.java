@@ -7,10 +7,13 @@ import lombok.Getter;
 @Getter
 public class Vehicle {
     private UUID id;
+    private int seats;
 
     public Vehicle(
-        UUID id
+        UUID id,
+        int seats
     ) {
         this.id = id;
+        this.seats = seats;
     }
 }

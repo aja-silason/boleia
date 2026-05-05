@@ -10,6 +10,7 @@ import com.boleia.boleia.entity.domain.UserIsAlreadyDeclinedError;
 import com.boleia.boleia.entity.domain.UserIsAlreadyPendingError;
 import com.boleia.boleia.shared.error.DomainError;
 import com.boleia.boleia.shared.types.Result;
+import com.boleia.boleia.travel.domain.IncommingSeatsIsMoreThanVehiclesSeatsError;
 import com.boleia.boleia.travel.domain.Travel;
 import com.boleia.boleia.travel.domain.TravelRepository;
 import com.boleia.boleia.travel.domain.driver.DriverACL;
@@ -37,6 +38,8 @@ public class CreateTravel {
 
         var vehicleOrErr = this.vehicleACL.findById(UUID.fromString(input.vehicleId()));
         if(vehicleOrErr.isError()) return Result.error(vehicleOrErr.unwrapError());
+
+        if(input.seats() > vehicleOrErr.unwrap().getSeats()) return Result.error(new IncommingSeatsIsMoreThanVehiclesSeatsError());
 
         var travel = Travel.create(
             vehicleOrErr.unwrap().getId(),

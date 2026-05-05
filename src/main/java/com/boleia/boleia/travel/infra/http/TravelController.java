@@ -21,6 +21,7 @@ import com.boleia.boleia.travel.application.RefuseRequestTravel;
 import com.boleia.boleia.travel.application.RequestTravel;
 import com.boleia.boleia.travel.application.StartTravel;
 import com.boleia.boleia.travel.application.TravelFinder;
+import com.boleia.boleia.travel.domain.IncommingSeatsIsMoreThanVehiclesSeatsError;
 import com.boleia.boleia.travel.domain.PassangerIsAlreadyInTravelError;
 import com.boleia.boleia.travel.domain.TravelIsFuelError;
 import com.boleia.boleia.travel.domain.TravelNotFoundError;
@@ -79,6 +80,7 @@ public class TravelController {
         if(out.isError() && out.unwrapError().getClass().equals(UserIsAlreadyDeclinedError.class)) return HttpResponse.badRequest(out.unwrapError().getMsg());
         if(out.isError() && out.unwrapError().getClass().equals(UserIsAlreadyPendingError.class)) return HttpResponse.badRequest(out.unwrapError().getMsg());
         if(out.isError() && out.unwrapError().getClass().equals(UserIsAlreadyDelitedError.class)) return HttpResponse.badRequest(out.unwrapError().getMsg());
+        if(out.isError() && out.unwrapError().getClass().equals(IncommingSeatsIsMoreThanVehiclesSeatsError.class)) return HttpResponse.badRequest(out.unwrapError().getMsg());
 
         if(out.isError()) return HttpResponse.serverError(out.unwrapError().getMsg());
 
