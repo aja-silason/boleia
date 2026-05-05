@@ -104,5 +104,9 @@ public class User {
         return this.status == EntityStatus.DEACTIVATED;
     }
 
+    public boolean isPending(){
+        return this.status == EntityStatus.PENDING;
+    }
+
 
 }

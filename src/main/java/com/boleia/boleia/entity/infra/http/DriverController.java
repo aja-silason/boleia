@@ -22,6 +22,11 @@ import com.boleia.boleia.entity.domain.PasswordLengthError;
 import com.boleia.boleia.entity.domain.PasswordMustBeNumbersAndHaveSixDigitsError;
 import com.boleia.boleia.entity.domain.RawAndPasswordMustProvidedError;
 import com.boleia.boleia.entity.domain.SignInOutput;
+import com.boleia.boleia.entity.domain.UserIsAlreadyBanedError;
+import com.boleia.boleia.entity.domain.UserIsAlreadyDeactivatedError;
+import com.boleia.boleia.entity.domain.UserIsAlreadyDeclinedError;
+import com.boleia.boleia.entity.domain.UserIsAlreadyDelitedError;
+import com.boleia.boleia.entity.domain.UserIsAlreadyPendingError;
 import com.boleia.boleia.entity.domain.UserNotFoundError;
 import com.boleia.boleia.shared.types.HttpResponse;
 
@@ -201,6 +206,12 @@ public class DriverController {
         var out = signin.execute(input);
 
         if(out.isError() && out.unwrapError().getClass().equals(UserNotFoundError.class)) return HttpResponse.notFound(out.unwrapError().getMsg());
+        
+        if(out.isError() && out.unwrapError().getClass().equals(UserIsAlreadyDeactivatedError.class)) return HttpResponse.badRequest(out.unwrapError().getMsg());
+        if(out.isError() && out.unwrapError().getClass().equals(UserIsAlreadyBanedError.class)) return HttpResponse.badRequest(out.unwrapError().getMsg());
+        if(out.isError() && out.unwrapError().getClass().equals(UserIsAlreadyDeclinedError.class)) return HttpResponse.badRequest(out.unwrapError().getMsg());
+        if(out.isError() && out.unwrapError().getClass().equals(UserIsAlreadyPendingError.class)) return HttpResponse.badRequest(out.unwrapError().getMsg());
+        if(out.isError() && out.unwrapError().getClass().equals(UserIsAlreadyDelitedError.class)) return HttpResponse.badRequest(out.unwrapError().getMsg());
 
         if(out.isError() && out.unwrapError().getClass().equals(PasswordIsWrongError.class)) return HttpResponse.badRequest(out.unwrapError().getMsg());
 

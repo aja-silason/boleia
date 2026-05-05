@@ -9,6 +9,10 @@ import com.boleia.boleia.entity.domain.DriverRepository;
 import com.boleia.boleia.entity.domain.Password;
 import com.boleia.boleia.entity.domain.PasswordIsWrongError;
 import com.boleia.boleia.entity.domain.SignInOutput;
+import com.boleia.boleia.entity.domain.UserIsAlreadyBanedError;
+import com.boleia.boleia.entity.domain.UserIsAlreadyDeactivatedError;
+import com.boleia.boleia.entity.domain.UserIsAlreadyDeclinedError;
+import com.boleia.boleia.entity.domain.UserIsAlreadyPendingError;
 import com.boleia.boleia.entity.domain.UserRepository;
 import com.boleia.boleia.shared.error.DomainError;
 import com.boleia.boleia.shared.types.Result;
@@ -36,6 +40,10 @@ public class SignIn {
 
         var driver = driverOrErr.unwrap();
         var user = userOrErr.unwrap();
+        if(user.isBanned()) return Result.error(new UserIsAlreadyBanedError());
+        if(user.isDeactivated()) return Result.error(new UserIsAlreadyDeactivatedError());
+        if(user.isDeclined()) return Result.error(new UserIsAlreadyDeclinedError());
+        if(user.isPending()) return Result.error(new UserIsAlreadyPendingError());
 
         LocalDateTime expirationDate = LocalDateTime.now().plusDays(3);
 
