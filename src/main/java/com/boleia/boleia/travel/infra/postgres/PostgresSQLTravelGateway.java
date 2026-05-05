@@ -140,6 +140,7 @@ public class PostgresSQLTravelGateway implements TravelGateway {
             model.getBrand(), 
             model.getYear(), 
             model.getSeats(), 
+            model.getStatus(),
             model.getCreatedAt().toString(),
             model.getUpdatedAt().toString()
         );
