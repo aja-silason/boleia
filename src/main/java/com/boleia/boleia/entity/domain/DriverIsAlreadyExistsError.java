@@ -4,6 +4,6 @@ import com.boleia.boleia.shared.error.DomainError;
 
 public class DriverIsAlreadyExistsError extends DomainError {
     public DriverIsAlreadyExistsError() {
-        super("O motorista com esse número de identificação não pode ser cadastrado.");
+        super("O motorista com esse número de identificação ou telefone já está cadastrado na plataforma.");
     }
 }

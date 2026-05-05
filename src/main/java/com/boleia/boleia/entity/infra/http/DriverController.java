@@ -214,6 +214,7 @@ public class DriverController {
         if(out.isError() && out.unwrapError().getClass().equals(UserIsAlreadyDelitedError.class)) return HttpResponse.badRequest(out.unwrapError().getMsg());
 
         if(out.isError() && out.unwrapError().getClass().equals(PasswordIsWrongError.class)) return HttpResponse.badRequest(out.unwrapError().getMsg());
+        if(out.isError() && out.unwrapError().getClass().equals(RawAndPasswordMustProvidedError.class)) return HttpResponse.badRequest(out.unwrapError().getMsg());
 
 
         return ResponseEntity.ok(out.unwrap());

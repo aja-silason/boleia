@@ -32,18 +32,18 @@ public class SignIn {
         var driverOrErr = this.driverRepository.findByUserId(userOrErr.unwrap().getId());
         if(driverOrErr.isError()) return Result.error(driverOrErr.unwrapError());
 
-        var aPassword = new Password();
-        var passwordMatched = aPassword.matches(input.password(), driverOrErr.unwrap().getPassword());
-        if(passwordMatched.isError()) return Result.error(passwordMatched.unwrapError());
-
-        if(!passwordMatched.unwrap()) return Result.error(new PasswordIsWrongError());
-
         var driver = driverOrErr.unwrap();
         var user = userOrErr.unwrap();
         if(user.isBanned()) return Result.error(new UserIsAlreadyBanedError());
         if(user.isDeactivated()) return Result.error(new UserIsAlreadyDeactivatedError());
         if(user.isDeclined()) return Result.error(new UserIsAlreadyDeclinedError());
         if(user.isPending()) return Result.error(new UserIsAlreadyPendingError());
+
+        var aPassword = new Password();
+        var passwordMatched = aPassword.matches(input.password(), driver.getPassword());
+        if(passwordMatched.isError()) return Result.error(passwordMatched.unwrapError());
+
+        if(!passwordMatched.unwrap()) return Result.error(new PasswordIsWrongError());
 
         LocalDateTime expirationDate = LocalDateTime.now().plusDays(3);
 
