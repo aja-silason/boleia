@@ -7,7 +7,7 @@ import com.boleia.boleia.shared.types.Result;
 import com.boleia.boleia.support.domain.chatSupport.ChatSupport;
 import com.boleia.boleia.support.domain.chatSupport.ChatSupportRepository;
 import com.boleia.boleia.support.domain.chatSupport.SupportMustHaveMessageError;
-import com.boleia.boleia.support.domain.user.UserACL;
+import com.boleia.boleia.support.infra.acl.UserACLService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -15,7 +15,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class RequestSupport {
     private final ChatSupportRepository repository;
-    private final UserACL userACL;
+    private final UserACLService userACL;
 
     public Result<Void, DomainError> execute(RequestSupportInput input){
         var userOrErr = this.userACL.findById(input.userId());

@@ -2,7 +2,6 @@ package com.boleia.boleia.travel.application;
 
 import org.springframework.stereotype.Service;
 
-import com.boleia.boleia.shared.domain.notification.FirebaseNotificationRepository;
 import com.boleia.boleia.shared.error.DomainError;
 import com.boleia.boleia.shared.types.Result;
 import com.boleia.boleia.travel.domain.PassangerIsAlreadyInTravelError;
@@ -21,7 +20,6 @@ public class RequestTravel {
     private final TravelRepository repository;
     private final UserACL userACL;
     private final DriverACL driverACL;
-    private final FirebaseNotificationRepository firebaseNotificationRepository;
 
     @Transactional
     public Result<Void, DomainError> execute(RequestTravelInput input){

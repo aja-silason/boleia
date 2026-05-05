@@ -8,14 +8,14 @@ import com.boleia.boleia.shared.jpa.entity.UserModel;
 import com.boleia.boleia.shared.jpa.entity.UserModelJpa;
 import com.boleia.boleia.shared.types.Result;
 import com.boleia.boleia.support.domain.user.User;
-import com.boleia.boleia.support.domain.user.UserACL;
+import com.boleia.boleia.support.domain.user.UserAcl;
 import com.boleia.boleia.support.domain.user.UserNotFoundError;
 
 import lombok.RequiredArgsConstructor;
 
 @Service("support.UserACL")
 @RequiredArgsConstructor
-public class UserACLService implements UserACL {
+public class UserACLService implements UserAcl {
     private final UserModelJpa jpa;
 
     @Override
