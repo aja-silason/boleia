@@ -21,7 +21,8 @@ public class RegisterDriver {
     @Transactional
     public Result<Driver, DomainError> execute(RegisterDriverInput input){
         var driverOrErr = this.repository.findByIdentificationNumber(input.identificationNumber());
-        if(driverOrErr.isOk()) return Result.error(new DriverIsAlreadyExistsError());
+        var driverIsAlreadyExistWithThisPhoneNumber = this.repository.findByPhoneNumber(input.phoneNumber());
+        if(driverOrErr.isOk() || driverIsAlreadyExistWithThisPhoneNumber.isOk()) return Result.error(new DriverIsAlreadyExistsError());
 
         var user = User.create(
             input.firstName(), input.lastName(), input.phoneNumber(), EntityType.DRIVER);
