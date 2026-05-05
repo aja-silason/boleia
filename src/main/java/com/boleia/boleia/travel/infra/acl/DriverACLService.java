@@ -10,6 +10,7 @@ import com.boleia.boleia.shared.types.Result;
 import com.boleia.boleia.travel.domain.driver.Driver;
 import com.boleia.boleia.travel.domain.driver.DriverACL;
 import com.boleia.boleia.travel.domain.driver.DriverNotFoundError;
+import com.boleia.boleia.travel.domain.driver.EntityStatus;
 
 import lombok.RequiredArgsConstructor;
 
@@ -29,7 +30,8 @@ public class DriverACLService implements DriverACL {
     private Driver toDriverFactory(DriverModel model) {
         return new Driver(
             UUID.fromString(model.getId()),
-            model.getUser().getFcm() == null ? null : model.getUser().getFcm()
+            model.getUser().getFcm() == null ? null : model.getUser().getFcm(),
+            EntityStatus.fromValue(model.getStatus())
         ); 
     }
 }

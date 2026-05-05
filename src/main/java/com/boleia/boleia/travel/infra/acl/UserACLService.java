@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import com.boleia.boleia.shared.jpa.entity.UserModel;
 import com.boleia.boleia.shared.jpa.entity.UserModelJpa;
 import com.boleia.boleia.shared.types.Result;
+import com.boleia.boleia.travel.domain.user.EntityStatus;
 import com.boleia.boleia.travel.domain.user.EntityType;
 import com.boleia.boleia.travel.domain.user.User;
 import com.boleia.boleia.travel.domain.user.UserACL;
@@ -31,7 +32,8 @@ public class UserACLService implements UserACL {
         return new User(
             UUID.fromString(model.getId()),
             EntityType.fromValue(model.getType().toString()),
-            model.getFcm()
+            model.getFcm(),
+            EntityStatus.fromValue(model.getStatus())
         );
     }
 

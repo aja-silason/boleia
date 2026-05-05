@@ -5,6 +5,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.boleia.boleia.entity.domain.DriverIsAlreadyExistsError;
+import com.boleia.boleia.entity.domain.UserIsAlreadyBanedError;
+import com.boleia.boleia.entity.domain.UserIsAlreadyDeactivatedError;
+import com.boleia.boleia.entity.domain.UserIsAlreadyDeclinedError;
+import com.boleia.boleia.entity.domain.UserIsAlreadyDelitedError;
+import com.boleia.boleia.entity.domain.UserIsAlreadyPendingError;
 import com.boleia.boleia.entity.domain.UserNotFoundError;
 import com.boleia.boleia.shared.types.HttpResponse;
 import com.boleia.boleia.travel.application.ApproveRequestTravel;
@@ -69,6 +74,11 @@ public class TravelController {
         var out = this.createTravel.execute(input);
 
         if(out.isError() && out.unwrapError().getClass().equals(DriverIsAlreadyExistsError.class)) return HttpResponse.conflict(out.unwrapError().getMsg());
+        if(out.isError() && out.unwrapError().getClass().equals(UserIsAlreadyDeactivatedError.class)) return HttpResponse.badRequest(out.unwrapError().getMsg());
+        if(out.isError() && out.unwrapError().getClass().equals(UserIsAlreadyBanedError.class)) return HttpResponse.badRequest(out.unwrapError().getMsg());
+        if(out.isError() && out.unwrapError().getClass().equals(UserIsAlreadyDeclinedError.class)) return HttpResponse.badRequest(out.unwrapError().getMsg());
+        if(out.isError() && out.unwrapError().getClass().equals(UserIsAlreadyPendingError.class)) return HttpResponse.badRequest(out.unwrapError().getMsg());
+        if(out.isError() && out.unwrapError().getClass().equals(UserIsAlreadyDelitedError.class)) return HttpResponse.badRequest(out.unwrapError().getMsg());
 
         if(out.isError()) return HttpResponse.serverError(out.unwrapError().getMsg());
 
@@ -174,6 +184,11 @@ public class TravelController {
         if(out.isError() && out.unwrapError().getClass().equals(TravelNotFoundError.class)) return HttpResponse.notFound(out.unwrapError().getMsg());
         if(out.isError() && out.unwrapError().getClass().equals(TravelIsFuelError.class)) return HttpResponse.badRequest(out.unwrapError().getMsg());
         if(out.isError() && out.unwrapError().getClass().equals(PassangerIsAlreadyInTravelError.class)) return HttpResponse.conflict(out.unwrapError().getMsg());
+        if(out.isError() && out.unwrapError().getClass().equals(UserIsAlreadyDeactivatedError.class)) return HttpResponse.badRequest(out.unwrapError().getMsg());
+        if(out.isError() && out.unwrapError().getClass().equals(UserIsAlreadyBanedError.class)) return HttpResponse.badRequest(out.unwrapError().getMsg());
+        if(out.isError() && out.unwrapError().getClass().equals(UserIsAlreadyDeclinedError.class)) return HttpResponse.badRequest(out.unwrapError().getMsg());
+        if(out.isError() && out.unwrapError().getClass().equals(UserIsAlreadyPendingError.class)) return HttpResponse.badRequest(out.unwrapError().getMsg());
+        if(out.isError() && out.unwrapError().getClass().equals(UserIsAlreadyDelitedError.class)) return HttpResponse.badRequest(out.unwrapError().getMsg());
 
         if(out.isError()) return HttpResponse.serverError(out.unwrapError().getMsg());
 

@@ -2,6 +2,10 @@ package com.boleia.boleia.travel.application;
 
 import org.springframework.stereotype.Service;
 
+import com.boleia.boleia.entity.domain.UserIsAlreadyBanedError;
+import com.boleia.boleia.entity.domain.UserIsAlreadyDeactivatedError;
+import com.boleia.boleia.entity.domain.UserIsAlreadyDeclinedError;
+import com.boleia.boleia.entity.domain.UserIsAlreadyPendingError;
 import com.boleia.boleia.shared.error.DomainError;
 import com.boleia.boleia.shared.types.Result;
 import com.boleia.boleia.travel.domain.PassangerIsAlreadyInTravelError;
@@ -19,12 +23,16 @@ import lombok.RequiredArgsConstructor;
 public class RequestTravel {
     private final TravelRepository repository;
     private final UserACL userACL;
-    private final DriverACL driverACL;
 
     @Transactional
     public Result<Void, DomainError> execute(RequestTravelInput input){
         var userOrErr = this.userACL.findById(input.passangerId());
         if(userOrErr.isError()) return Result.error(userOrErr.unwrapError());
+
+        if(userOrErr.unwrap().isBanned()) return Result.error(new UserIsAlreadyBanedError());
+        if(userOrErr.unwrap().isDeactivated()) return Result.error(new UserIsAlreadyDeactivatedError());
+        if(userOrErr.unwrap().isDeclined()) return Result.error(new UserIsAlreadyDeclinedError());
+        if(userOrErr.unwrap().isPending()) return Result.error(new UserIsAlreadyPendingError());
 
         var travelOrErr = this.repository.findById(input.travelId());
         if(travelOrErr.isError()) return Result.error(travelOrErr.unwrapError());

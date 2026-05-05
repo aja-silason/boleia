@@ -4,6 +4,10 @@ import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 
+import com.boleia.boleia.entity.domain.UserIsAlreadyBanedError;
+import com.boleia.boleia.entity.domain.UserIsAlreadyDeactivatedError;
+import com.boleia.boleia.entity.domain.UserIsAlreadyDeclinedError;
+import com.boleia.boleia.entity.domain.UserIsAlreadyPendingError;
 import com.boleia.boleia.shared.error.DomainError;
 import com.boleia.boleia.shared.types.Result;
 import com.boleia.boleia.travel.domain.Travel;
@@ -25,6 +29,11 @@ public class CreateTravel {
     public Result<Void, DomainError> execute(CreateTravelInput input){
         var driverOrErr = this.driverACL.findById(UUID.fromString(input.driverId()));
         if(driverOrErr.isError()) return Result.error(driverOrErr.unwrapError());
+        
+        if(driverOrErr.unwrap().isBanned()) return Result.error(new UserIsAlreadyBanedError());
+        if(driverOrErr.unwrap().isDeactivated()) return Result.error(new UserIsAlreadyDeactivatedError());
+        if(driverOrErr.unwrap().isDeclined()) return Result.error(new UserIsAlreadyDeclinedError());
+        if(driverOrErr.unwrap().isPending()) return Result.error(new UserIsAlreadyPendingError());
 
         var vehicleOrErr = this.vehicleACL.findById(UUID.fromString(input.vehicleId()));
         if(vehicleOrErr.isError()) return Result.error(vehicleOrErr.unwrapError());

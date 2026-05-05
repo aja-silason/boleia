@@ -1,0 +1,27 @@
+package com.boleia.boleia.travel.domain.user;
+
+import lombok.Getter;
+
+@Getter
+public enum EntityStatus {
+    APPROVED("APPROVED"),
+    DECLINED("DECLINED"),
+    DEACTIVATED("DEACTIVATED"),
+    PENDING("PENDING"),
+    BANED("BANED");
+
+    private final String value;
+
+    EntityStatus(String value) {
+        this.value = value;
+    }
+
+    public static EntityStatus fromValue(String value) {
+    for (EntityStatus type : EntityStatus.values()) {
+      if (type.value.equalsIgnoreCase(value)) {
+        return type;
+      }
+    }
+    throw new IllegalArgumentException("Invalid DriverStatus: " + value);
+  }
+}
